@@ -1,3 +1,6 @@
+.PHONY: default
+default: lint
+
 .PHONY: lint
 lint:
 	poetry run ruff format
