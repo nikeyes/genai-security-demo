@@ -26,6 +26,7 @@ pytest-cov = "^6.0.0"
 ruff = "^0.11.2"
 
 [tool.ruff]
+extend-include = ["*.ipynb"]
 line-length = 140
 # Added from flake8 config
 lint.select = ["E", "F", "G"] # G is the flake8-logging-format extension
