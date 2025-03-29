@@ -10,6 +10,7 @@ Created for the talk: [Hacking and securing your GenAI applications](https://doc
 - [2. LLM Providers](#2-llm-providers)
 - [3. Running the Chatbot](#3-running-the-chatbot)
 - [4. Testing](#4-testing)
+- [5. Format and Linter (with auto-fix)](#5-format-and-linter-with-auto-fix)
 
 ## 1. Installation
 
