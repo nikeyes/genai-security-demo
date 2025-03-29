@@ -18,10 +18,53 @@ sentence-transformers = "2.7.0"
 codeshield = "^1.0.1"
 openai = "^1.68.2"
 groq = "^0.20.0"
+
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.29.5"
 pytest = "^8.3.5"
 pytest-cov = "^6.0.0"
+ruff = "^0.11.2"
+
+[tool.ruff]
+line-length = 140
+# Added from flake8 config
+select = ["E", "F", "G"] # G is the flake8-logging-format extension
+exclude = [".git", ".venv"]
+ignore = [
+    "S101", # Use of assert detected (useless with pytest)
+    "S301", # It is OK to use Pickle in this project
+    "S403", # It is OK to use Pickle in this project  
+    # Converted from pylint disable
+    "D",       # All missing-docstring rules (D100-D107)
+    "E402",    # import-outside-toplevel
+    "PLR0913", # too-many-arguments
+    "PLR0914", # too-many-locals
+    "PLW0603", # global-statement
+]
+
+# Pylint complexity settings
+[tool.ruff.lint.pylint]
+max-args = 5
+max-bool-expr = 5
+max-nested-blocks = 2
+max-public-methods = 10
+max-returns = 5
+max-statements = 50
+
+# Pylint ignored classes
+[tool.ruff.lint.isort]
+# treat-comments-as-code = ["contextlib.closing"]
+# balanced-wrapping = true
+# section-default = "THIRDPARTY"
+# include-trailing-comma = true
+known-first-party = ["tests"]
+# multi-line-output = 3
+
+[tool.ruff.mccabe]
+max-complexity = 8
+
+[tool.ruff.format]
+quote-style = "single"
 
 [tool.pytest.ini_options]
 testpaths = [
