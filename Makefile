@@ -8,4 +8,5 @@ help: ## Show help
 .PHONY: python-lint
 python-lint:
 	ruff format
-	ruff check --fix
+	ruff check --fix-only 
+	ruff check
