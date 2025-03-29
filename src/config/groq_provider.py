@@ -21,7 +21,10 @@ class GroqProvider:
 
         print('GroqWrapper invoke...')
 
-        messages = [{'role': 'system', 'content': system_prompt}, {'role': 'user', 'content': user_prompt}]
+        messages = [
+            {'role': 'system', 'content': system_prompt},
+            {'role': 'user', 'content': user_prompt},
+        ]
 
         self.trace_invocation_info(user_prompt, self.model_id, messages)
 

@@ -25,9 +25,17 @@ class Rag:
     )
 
     def __init__(self, strict_security: bool = True, score_threshold=SIMILARITY_CUTOFF_THRESHOLD_PERCENT):
-        llm = Bedrock(region_name='eu-central-1', model='anthropic.claude-3-haiku-20240307-v1:0', profile_name='data-dev')
+        llm = Bedrock(
+            region_name='eu-central-1',
+            model='anthropic.claude-3-haiku-20240307-v1:0',
+            profile_name='data-dev',
+        )
 
-        embed_model = BedrockEmbedding(region_name='eu-central-1', model_name='cohere.embed-multilingual-v3', profile_name='data-dev')
+        embed_model = BedrockEmbedding(
+            region_name='eu-central-1',
+            model_name='cohere.embed-multilingual-v3',
+            profile_name='data-dev',
+        )
 
         # global settings
         Settings.llm = llm
