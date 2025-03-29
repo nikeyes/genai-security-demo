@@ -8,14 +8,14 @@ from ui.output_guardrail_ui import output_guardrail_demo
 from config.llm_config import LLAMA_SECURITY_FAMILY
 
 if LLAMA_SECURITY_FAMILY:
-    print("Llama Security Family: ENABLED")
+    print('Llama Security Family: ENABLED')
     demos = [basic_demo, rag_demo, leak_demo, input_guardrail_demo, output_guardrail_demo]
-    demo_names = ["Direct", "RAG", "Prompt Leak", "Input Guardrails", "Output Guardrails"]
+    demo_names = ['Direct', 'RAG', 'Prompt Leak', 'Input Guardrails', 'Output Guardrails']
 
 else:
-    print("Llama Security Family: DISABLED")
+    print('Llama Security Family: DISABLED')
     demos = [basic_demo, rag_demo, leak_demo]
-    demo_names = ["Direct", "RAG", "Prompt Leak"]
+    demo_names = ['Direct', 'RAG', 'Prompt Leak']
 
 
 demo = gr.TabbedInterface(demos, demo_names)

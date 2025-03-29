@@ -1,5 +1,6 @@
 import logging
 
+
 def setup_logger(name: str, debug: bool = False) -> logging.Logger:
     """
     Configure and return a logger with consistent settings.

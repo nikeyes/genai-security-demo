@@ -1,5 +1,6 @@
 import time
 
+
 def slow_echo(result):
     result = str(result)
     count = len(result)

@@ -14,30 +14,20 @@ from prompts import RAG_INPUT_SENSITIVITY_CHECK_SYSTEM_PROMPT
 
 
 class Rag:
-
     SIMILARITY_CUTOFF_THRESHOLD_PERCENT = 30
 
     PROMPT_TEMPLATE = (
-        "We have provided context information below. \n"
-        "---------------------\n"
-        "{context_str}"
-        "\n---------------------\n"
-        "Given this information, please answer the question: {query_str}\n"
+        'We have provided context information below. \n'
+        '---------------------\n'
+        '{context_str}'
+        '\n---------------------\n'
+        'Given this information, please answer the question: {query_str}\n'
     )
 
     def __init__(self, strict_security: bool = True, score_threshold=SIMILARITY_CUTOFF_THRESHOLD_PERCENT):
+        llm = Bedrock(region_name='eu-central-1', model='anthropic.claude-3-haiku-20240307-v1:0', profile_name='data-dev')
 
-        llm = Bedrock(
-            region_name="eu-central-1",
-            model="anthropic.claude-3-haiku-20240307-v1:0",
-            profile_name="data-dev"
-        )
-
-        embed_model = BedrockEmbedding(
-            region_name="eu-central-1",
-            model_name="cohere.embed-multilingual-v3",
-            profile_name="data-dev"
-        )
+        embed_model = BedrockEmbedding(region_name='eu-central-1', model_name='cohere.embed-multilingual-v3', profile_name='data-dev')
 
         # global settings
         Settings.llm = llm
@@ -45,12 +35,12 @@ class Rag:
         self.index_folder = './vector_index/default'
 
         # load documents
-        local_data = SimpleDirectoryReader(input_dir="src/data", required_exts=[".txt"]).load_data()
+        local_data = SimpleDirectoryReader(input_dir='src/data', required_exts=['.txt']).load_data()
         # web_data = SimpleWebPageReader(html_to_text=True).load_data(
         #     ["https://nikeyes.github.io/Principios-de-un-Open-Space-y-viajar-con-ni%C3%B1os-en-coche/"]
         # )
 
-        if (strict_security):
+        if strict_security:
             local_data = self.filter_out_sensitive_data_from(local_data)
 
         # indexing documents using vector store
@@ -58,25 +48,22 @@ class Rag:
 
         self.query_engine = RetrieverQueryEngine(
             retriever=(self.vector_index.as_retriever(similarity_top_k=3)),
-            node_postprocessors=[(SimilarityPostprocessor(similarity_cutoff=score_threshold / 100))]
+            node_postprocessors=[(SimilarityPostprocessor(similarity_cutoff=score_threshold / 100))],
         )
-        self.query_engine.update_prompts(
-            {"response_synthesizer:text_qa_template": (PromptTemplate(self.PROMPT_TEMPLATE))}
-        )
+        self.query_engine.update_prompts({'response_synthesizer:text_qa_template': (PromptTemplate(self.PROMPT_TEMPLATE))})
 
         # Store Vector Index
         # self.vector_index.storage_context.persist(persist_dir=self.index_folder)
 
     def rag_response(self, query):
-
         response = self.query_engine.query(query)
 
         for i, node_with_score in enumerate(response.source_nodes, 1):
-            print(f"\nNode {i}:")
-            print(f"Score: {node_with_score.score:.4f}")
-            print(f"Node ID: {node_with_score.node.id_}")
-            print(f"Text Preview: {node_with_score.node.text[:100]}...")
-            print("-" * 80)
+            print(f'\nNode {i}:')
+            print(f'Score: {node_with_score.score:.4f}')
+            print(f'Node ID: {node_with_score.node.id_}')
+            print(f'Text Preview: {node_with_score.node.text[:100]}...')
+            print('-' * 80)
 
         return response
 
@@ -85,7 +72,7 @@ class Rag:
         filtered = []
         for doc in local_data:
             assessment = llm.invoke(RAG_INPUT_SENSITIVITY_CHECK_SYSTEM_PROMPT, doc.text)
-            print(f"{assessment} determined for: {doc}")
+            print(f'{assessment} determined for: {doc}')
             if assessment == 'not_sensitive':
                 filtered.append(doc)
 
