@@ -1,4 +1,3 @@
-import os
 import unittest
 from config.llm_config import BEDROCK_LLM
 class TestBedrockClaudeProvider(unittest.TestCase):

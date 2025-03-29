@@ -1,4 +1,3 @@
-import os
 import unittest
 from config.llm_config import OPENAI_LLM
 class TestOpenAIProvider(unittest.TestCase):

@@ -31,7 +31,7 @@ class SecureBot:
                 if guardrail_response == "not_allowed":
                     chat_task.cancel()
                     print(self.INSTRUCTION_CHANGE_GUARDRAIL_TRIGGERED_MESSAGE)
-                    return f"Sorry I won't do that. [GUARDRAIL]"
+                    return "Sorry I won't do that. [GUARDRAIL]"
                 elif chat_task in done:
                     chat_response = chat_task.result()
                     return self.check_system_prompt_leak(chat_response)
@@ -41,7 +41,7 @@ class SecureBot:
     def check_system_prompt_leak(self, chat_response):
         if "lightblueeagle" in chat_response:
             print("canary word found in response")
-            return f"Sorry I won't do that. [CANARY]"
+            return "Sorry I won't do that. [CANARY]"
 
         return chat_response
 
