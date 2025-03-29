@@ -120,3 +120,8 @@ Run tests:
 ```shell
 poetry run pytest -v --cov=src --no-cov-on-fail --cov-report=term-missing tests/
 ```
+
+## 5. Format and Linter (with auto-fix)
+```shell
+make lint-fix
+```
