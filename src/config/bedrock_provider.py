@@ -53,17 +53,17 @@ class BedrockClaudeProvider:
 
     def trace_invocation_info(self, user_prompt, model_id, body):
         self.logger.debug('Invocation details:')
-        self.logger.debug(f'model_id: {model_id}')
-        self.logger.debug(f'user prompt: {user_prompt}')
-        self.logger.debug(f'body: {body}')
+        self.logger.debug('model_id: %s', model_id)
+        self.logger.debug('user prompt: %s', user_prompt)
+        self.logger.debug('body: %s', body)
 
     def trace_invocation_result(self, completion, output_list):
         input_tokens = completion['usage']['input_tokens']
         output_tokens = completion['usage']['output_tokens']
+        self.logger.debug('Response details:')
+        self.logger.debug('- Input tokens: %s', input_tokens)
+        self.logger.debug('- Output tokens: %s', output_tokens)
 
-        self.logger.debug(f'- The input length is {input_tokens} tokens.')
-        self.logger.debug(f'- The output length is {output_tokens} tokens.')
-        self.logger.debug(f'- The model returned {len(output_list)} response(s):')
         for output in output_list:
             self.logger.debug(output['text'])
         self.logger.debug('Invocation completed.')

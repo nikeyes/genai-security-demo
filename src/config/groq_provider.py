@@ -43,12 +43,12 @@ class GroqProvider:
     def trace_invocation_info(self, user_prompt, model_id, messages):
         """Log debug information before the API call."""
         self.logger.debug('Invocation details:')
-        self.logger.debug(f'model_id: {model_id}')
-        self.logger.debug(f'user prompt: {user_prompt}')
-        self.logger.debug(f'messages: {messages}')
+        self.logger.debug('model_id: %s', model_id)
+        self.logger.debug('user prompt: %s', user_prompt)
+        self.logger.debug('messages: %s', messages)
 
     def trace_invocation_result(self, response):
         """Log debug information after receiving the API response."""
         self.logger.debug('Response details:')
-        self.logger.debug(f'- Completion text: {response.choices[0].message.content}')
+        self.logger.debug('- Completion text: %s', response.choices[0].message.content)
         self.logger.debug('Invocation completed.')

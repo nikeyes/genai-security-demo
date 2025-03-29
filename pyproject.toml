@@ -28,9 +28,9 @@ ruff = "^0.11.2"
 [tool.ruff]
 line-length = 140
 # Added from flake8 config
-select = ["E", "F", "G"] # G is the flake8-logging-format extension
+lint.select = ["E", "F", "G"] # G is the flake8-logging-format extension
 exclude = [".git", ".venv"]
-ignore = [
+lint.ignore = [
     "S101", # Use of assert detected (useless with pytest)
     "S301", # It is OK to use Pickle in this project
     "S403", # It is OK to use Pickle in this project  
@@ -41,6 +41,9 @@ ignore = [
     "PLR0914", # too-many-locals
     "PLW0603", # global-statement
 ]
+
+[tool.ruff.format]
+quote-style = "single"
 
 # Pylint complexity settings
 [tool.ruff.lint.pylint]
@@ -53,18 +56,13 @@ max-statements = 50
 
 # Pylint ignored classes
 [tool.ruff.lint.isort]
-# treat-comments-as-code = ["contextlib.closing"]
-# balanced-wrapping = true
-# section-default = "THIRDPARTY"
-# include-trailing-comma = true
-known-first-party = ["tests"]
-# multi-line-output = 3
+known-first-party = ["tests"] 
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 8
 
-[tool.ruff.format]
-quote-style = "single"
+[tool.ruff.lint.per-file-ignores]
+"src/prompts.py" = ["E501"] # Ignore line length in this file
 
 [tool.pytest.ini_options]
 testpaths = [
