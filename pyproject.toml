@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "security-chatbot"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+gradio = "^5.15.0"
+boto3 = "1.36.0"
+llama-index = "^0.12.16"
+llama-index-embeddings-bedrock = "^0.5.0"
+llama-index-llms-bedrock = "^0.3.3"
+asyncio = "^3.4.3"
+torch = "2.2.0"
+sentence-transformers = "2.7.0"
+codeshield = "^1.0.1"
+openai = "^1.68.2"
+groq = "^0.20.0"
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.5"
+pytest = "^8.3.5"
+pytest-cov = "^6.0.0"
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+    "tests/integration_tests",
+    "tests/unit_tests",
+    "tests/approval_tests",
+]
+pythonpath = ["src"]
+python_files = ["test_*.py", "*_test.py", "*_should.py"]
+python_classes = ["Test", "Acceptance", "Given"]
+python_functions = ["test", "*_test", "when_*", "then_*"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

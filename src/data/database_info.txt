@@ -1,0 +1,5 @@
+sports good store database details
+
+hostname: sportinggoodshostname.com
+username: admin
+password: I5ipEbDww0oQvhC
