@@ -1,10 +1,14 @@
 .PHONY: default
 default: lint
 
-.PHONY: lint
-lint:
+.PHONY: lint-fix
+lint-fix:
 	poetry run ruff format
 	poetry run ruff check --fix-only 
+	poetry run ruff check
+
+.PHONY: lint
+lint:
 	poetry run ruff check
 
 .PHONY: test
