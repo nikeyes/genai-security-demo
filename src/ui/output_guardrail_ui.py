@@ -1,12 +1,17 @@
 import gradio as gr
 
-from config.llm_config import DEFAULT_UNPROTECTED_LLM, DEFAULT_SECURE_LLM
+from config.llm_config import LLMConfig
 from chatbot.output_guardrail_bot import OutputGuardrailsBot
 from chatbot.unprotected_bot import UnprotectedBot
 from ui.common import slow_echo
 
-unprotected_bot = UnprotectedBot(DEFAULT_UNPROTECTED_LLM)
-output_guardrail_bot = OutputGuardrailsBot(DEFAULT_SECURE_LLM)
+# Initialize LLMConfig
+llm_config = LLMConfig(debug=False)
+llm_config.initialize()
+
+# Use methods to get default LLMs
+unprotected_bot = UnprotectedBot(llm_config.get_default_unprotected_llm())
+output_guardrail_bot = OutputGuardrailsBot(llm_config.get_default_secure_llm())
 
 
 def unprotected_chat(message, history):

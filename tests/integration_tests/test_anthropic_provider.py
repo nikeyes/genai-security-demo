@@ -1,14 +1,17 @@
 import unittest
 
 import pytest
+
+from config.llm_config import LLMConfig
+
+
 @pytest.mark.real_provider
 class TestAnthropicProvider(unittest.TestCase):
-    
-    # import inside the class to avoid import errors on ci test
-    from config.llm_config import ANTHROPIC_LLM
-
     def setUp(self):
-        self.provider = ANTHROPIC_LLM
+        llm_config = LLMConfig(debug=False)
+        llm_config.initialize()
+
+        self.provider = llm_config.get_anthropic_llm()
 
     def test_real_invocation(self):
         system_prompt = 'You are a helpful assistant.'

@@ -2,14 +2,16 @@ import unittest
 
 import pytest
 
+from config.llm_config import LLMConfig
+
 
 @pytest.mark.real_provider
-class TestGrowProvider(unittest.TestCase):
-    # import inside the class to avoid import errors on ci test
-    from config.llm_config import GROQ_LLM
-
+class TestGroqProvider(unittest.TestCase):
     def setUp(self):
-        self.provider = GROQ_LLM
+        llm_config = LLMConfig(debug=False)
+        llm_config.initialize()
+
+        self.provider = llm_config.get_groq_llm()
 
     def test_real_invocation(self):
         system_prompt = 'You are a helpful assistant.'

@@ -1,17 +1,19 @@
-#!/usr/bin/env python
-# filepath: /Users/jorge.castro/mordor/personal/genai-security-demo/debug_output_guardrail.py
-
 import traceback
 
 from chatbot.output_guardrail_bot import OutputGuardrailsBot
-from config.llm_config import DEFAULT_SECURE_LLM
+from config.llm_config import LLMConfig  # Cambiado de DEFAULT_SECURE_LLM
 
 
 def main():
-    print(f'Using model: {DEFAULT_SECURE_LLM.name}')
+    llm_config = LLMConfig(debug=False)
+    llm_config.initialize()
+
+    secure_llm = llm_config.get_default_secure_llm()
+
+    print(f'Using model: {secure_llm.name}')
 
     try:
-        bot = OutputGuardrailsBot(DEFAULT_SECURE_LLM)
+        bot = OutputGuardrailsBot(secure_llm)
         print('Bot initialized successfully!')
     except Exception as e:
         print(f'ERROR initializing bot: {str(e)}')

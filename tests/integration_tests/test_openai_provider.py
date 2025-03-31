@@ -2,14 +2,16 @@ import unittest
 
 import pytest
 
+from config.llm_config import LLMConfig
+
 
 @pytest.mark.real_provider
 class TestOpenAIProvider(unittest.TestCase):
-    # import inside the class to avoid import errors on ci test
-    from config.llm_config import OPENAI_LLM
-
     def setUp(self):
-        self.provider = OPENAI_LLM
+        llm_config = LLMConfig(debug=False)
+        llm_config.initialize()
+
+        self.provider = llm_config.get_openai_llm()
 
     def test_real_invocation(self):
         system_prompt = 'You are a helpful assistant.'

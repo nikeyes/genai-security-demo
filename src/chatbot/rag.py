@@ -1,14 +1,11 @@
-from llama_index.core import Settings, SimpleDirectoryReader, VectorStoreIndex
+from llama_index.core import PromptTemplate, Settings, SimpleDirectoryReader, VectorStoreIndex
 from llama_index.core.postprocessor import SimilarityPostprocessor
 from llama_index.core.query_engine import RetrieverQueryEngine
-from llama_index.llms.bedrock import Bedrock
 from llama_index.embeddings.bedrock import BedrockEmbedding
-from llama_index.core import PromptTemplate
+from llama_index.llms.bedrock import Bedrock
 
-from config.llm_config import BEDROCK_MODEL_ID
-from config.bedrock_provider import BedrockClaudeProvider
+from config.llm_config import LLMConfig
 from prompts import RAG_INPUT_SENSITIVITY_CHECK_SYSTEM_PROMPT
-
 
 # from llama_index.readers.web import SimpleWebPageReader
 
@@ -25,9 +22,16 @@ class Rag:
     )
 
     def __init__(self, strict_security: bool = True, score_threshold=SIMILARITY_CUTOFF_THRESHOLD_PERCENT):
+        # Initialize LLMConfig
+        self.llm_config = LLMConfig(debug=False)
+        self.llm_config.initialize()
+
+        # Get model ID from config
+        bedrock_model_id = self.llm_config.BEDROCK_MODEL_ID
+
         llm = Bedrock(
             region_name='eu-central-1',
-            model='anthropic.claude-3-haiku-20240307-v1:0',
+            model=bedrock_model_id,
             profile_name='data-dev',
         )
 
@@ -76,7 +80,8 @@ class Rag:
         return response
 
     def filter_out_sensitive_data_from(self, local_data):
-        llm = BedrockClaudeProvider(model_id=BEDROCK_MODEL_ID)
+        # Use the bedrock LLM from config instead of creating a new one
+        llm = self.llm_config.get_bedrock_llm()
         filtered = []
         for doc in local_data:
             assessment = llm.invoke(RAG_INPUT_SENSITIVITY_CHECK_SYSTEM_PROMPT, doc.text)
