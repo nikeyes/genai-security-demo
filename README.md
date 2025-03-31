@@ -1,6 +1,6 @@
 # Security Chatbot
 
-![Linter](https://github.com/nikeyes/genai-security-demo/actions/workflows/linter.yml/badge.svg)
+![CI](https://github.com/nikeyes/genai-security-demo/actions/workflows/linter-and-tests.yml/badge.svg)
 
 A chatbot implementation that demonstrates security defenses for generative AI.
 Created for the talk: [Hacking and securing your GenAI applications](https://docs.google.com/presentation/d/18FUV5O1mfQEeSth6F8JlLV7fsSmDTGnG1OCgTOg8urU/edit#slide=id.p1)
