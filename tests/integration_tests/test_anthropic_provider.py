@@ -1,7 +1,11 @@
 import unittest
+
+import pytest
+
 from config.llm_config import ANTHROPIC_LLM
 
 
+@pytest.mark.real_provider
 class TestAnthropicProvider(unittest.TestCase):
     def setUp(self):
         self.provider = ANTHROPIC_LLM

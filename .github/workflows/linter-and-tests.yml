@@ -1,4 +1,4 @@
-name: Linter
+name: Linter and Tests
 
 on: [push]
 
@@ -24,3 +24,6 @@ jobs:
       - name: Analysing the code with Ruff
         run: |
           make lint
+      - name: Run CI tests
+        run: |
+          make ci-tests

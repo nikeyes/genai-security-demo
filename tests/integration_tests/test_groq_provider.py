@@ -1,7 +1,8 @@
 import unittest
+import pytest
 from config.llm_config import GROQ_LLM
 
-
+@pytest.mark.real_provider
 class TestGrowProvider(unittest.TestCase):
     def setUp(self):
         self.provider = GROQ_LLM

@@ -11,6 +11,10 @@ lint-fix:
 lint:
 	poetry run ruff check
 
-.PHONY: test
+.PHONY: local-tests
 test:
 	poetry run pytest -v --cov=src --no-cov-on-fail --cov-report=term-missing tests/
+
+.PHONY: ci-tests
+test:
+	poetry run pytest -v --cov=src --no-cov-on-fail --cov-report=term-missing tests/ -m "not real_provider"

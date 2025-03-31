@@ -1,7 +1,9 @@
 import unittest
+import pytest
 from config.llm_config import OPENAI_LLM
 
 
+@pytest.mark.real_provider
 class TestOpenAIProvider(unittest.TestCase):
     def setUp(self):
         self.provider = OPENAI_LLM

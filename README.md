@@ -119,7 +119,7 @@ Required environment variables:
 
 Run tests:
 ```shell
-poetry run pytest -v --cov=src --no-cov-on-fail --cov-report=term-missing tests/
+make local-tests
 ```
 
 ## 5. Format and Linter (with auto-fix)

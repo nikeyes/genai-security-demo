@@ -65,7 +65,12 @@ max-complexity = 8
 [tool.ruff.lint.per-file-ignores]
 "src/prompts.py" = ["E501"] # Ignore line length in this file
 
+
 [tool.pytest.ini_options]
+addopts = "--strict-markers"
+markers = [
+    "real_provider: marks tests to avoid con Github Actions (deselect with '-m \"not real_provider\"')",
+]
 testpaths = [
     "tests",
     "tests/integration_tests",

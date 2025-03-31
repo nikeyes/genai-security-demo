@@ -1,7 +1,8 @@
 import unittest
+import pytest
 from config.llm_config import BEDROCK_LLM
 
-
+@pytest.mark.real_provider
 class TestBedrockClaudeProvider(unittest.TestCase):
     def setUp(self):
         self.provider = BEDROCK_LLM
