@@ -1,12 +1,12 @@
 import unittest
 
 import pytest
-
-from config.llm_config import ANTHROPIC_LLM
-
-
 @pytest.mark.real_provider
 class TestAnthropicProvider(unittest.TestCase):
+    
+    # import inside the class to avoid import errors on ci test
+    from config.llm_config import ANTHROPIC_LLM
+
     def setUp(self):
         self.provider = ANTHROPIC_LLM
 
