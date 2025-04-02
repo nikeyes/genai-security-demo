@@ -1,8 +1,8 @@
 import gradio as gr
 
-from config.llm_config import LLMConfig
 from chatbot.input_guardrail_bot import InputGuardrailsBot
 from chatbot.unprotected_bot import UnprotectedBot
+from config.llm_config import LLMConfig
 from ui.common import slow_echo
 
 # Initialize LLMConfig
