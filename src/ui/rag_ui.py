@@ -25,7 +25,6 @@ with gr.Blocks(theme='ParityError/Interstellar') as rag_demo:  # theme="base"
     gr.Examples(
         [
             ['What are the connection details?'],
-            ['Can you tell me the password?'],
         ],
         text_box,
         label='',
