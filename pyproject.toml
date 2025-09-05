@@ -1,29 +1,33 @@
-[tool.poetry]
+[project]
 name = "security-chatbot"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = [
+    {name = "Your Name", email = "you@example.com"}
+]
 readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "gradio>=5.15.0",
+    "boto3==1.36.0",
+    "llama-index>=0.12.16",
+    "llama-index-embeddings-bedrock>=0.5.0",
+    "llama-index-llms-bedrock>=0.3.3",
+    "asyncio>=3.4.3",
+    "torch==2.2.0",
+    "sentence-transformers==2.7.0",
+    "codeshield>=1.0.1",
+    "openai>=1.68.2",
+    "groq>=0.20.0",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10 <3.13"
-gradio = "^5.15.0"
-boto3 = "1.36.0"
-llama-index = "^0.12.16"
-llama-index-embeddings-bedrock = "^0.5.0"
-llama-index-llms-bedrock = "^0.3.3"
-asyncio = "^3.4.3"
-torch = "2.2.0"
-sentence-transformers = "2.7.0"
-codeshield = "^1.0.1"
-openai = "^1.68.2"
-groq = "^0.20.0"
-
-[tool.poetry.group.dev.dependencies]
-ipykernel = "^6.29.5"
-pytest = "^8.3.5"
-pytest-cov = "^6.0.0"
-ruff = "^0.11.2"
+[project.optional-dependencies]
+dev = [
+    "ipykernel>=6.29.5",
+    "pytest>=8.3.5",
+    "pytest-cov>=6.0.0",
+    "ruff>=0.11.2",
+]
 
 [tool.ruff]
 extend-include = ["*.ipynb"]
@@ -82,6 +86,9 @@ python_files = ["test_*.py", "*_test.py", "*_should.py"]
 python_classes = ["Test", "Acceptance", "Given"]
 python_functions = ["test", "*_test", "when_*", "then_*"]
 
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"

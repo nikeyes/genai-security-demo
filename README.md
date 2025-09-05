@@ -15,8 +15,7 @@ Created for the talk: [Hacking and securing your GenAI applications](https://doc
 ## 1. Installation
 
 ```shell
-pyenv install 3.10
-poetry install
+make install
 ```
 
 ### 1.1 Security Features

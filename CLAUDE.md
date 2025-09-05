@@ -10,14 +10,14 @@ This is a security-focused GenAI chatbot demonstrating defensive security measur
 
 ### Development Setup
 ```bash
-# Install dependencies
-poetry install
+# Install uv and all dependencies (including dev)
+make install
 
 # Run the web interface
-poetry run python chatbot_webui.py
+uv run python chatbot_webui.py
 
 # Console version
-poetry run python chatbot_console.py
+uv run python chatbot_console.py
 ```
 
 ### Testing
@@ -29,8 +29,8 @@ make local-tests
 make ci-tests
 
 # Individual test commands
-poetry run pytest -v --cov=src --no-cov-on-fail --cov-report=term-missing tests/
-poetry run pytest -v tests/ -m "not real_provider"  # CI-safe tests only
+uv run pytest -v --cov=src --no-cov-on-fail --cov-report=term-missing tests/
+uv run pytest -v tests/ -m "not real_provider"  # CI-safe tests only
 ```
 
 ### Code Quality
@@ -40,7 +40,7 @@ make lint-fix
 
 # Check linting only
 make lint
-poetry run ruff check
+uv run ruff check
 ```
 
 ## Architecture
