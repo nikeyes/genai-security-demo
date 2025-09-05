@@ -6,7 +6,7 @@ from .logger_config import setup_logger
 class BedrockClaudeProvider:
     def __init__(self, model_id: str, debug: bool = False):
         self.name = 'Bedrock-Claude'
-        self.client = boto3.client(service_name='bedrock-runtime', region_name='eu-west-3')
+        self.client = boto3.client(service_name='bedrock-runtime', region_name='eu-central-1')
         self.model_id = model_id
         self.logger = setup_logger(__name__, debug)
         self.logger.debug('ClaudeWrapper initialized')
