@@ -1,26 +1,19 @@
 from groq import Groq
-from .logger_config import setup_logger
+from .base_provider import BaseProvider
 from .token_usage import TokenUsage
 
 
-class GroqProvider:
+class GroqProvider(BaseProvider):
     def __init__(self, model_id: str, debug: bool = False):
-        self.name = 'Llama-Groq'
+        super().__init__('Llama-Groq', model_id, debug)
         self.client = Groq()
-        self.model_id = model_id
-        self.logger = setup_logger(__name__, debug)
-        self.logger.debug('GroqWrapper initialized')
-
-    @staticmethod
-    def is_empty(s):
-        return s.strip() == ''
 
     def invoke(self, system_prompt: str, user_prompt: str):
         """Invoke Groq model with system and user prompts."""
         if self.is_empty(user_prompt):
             return ' '
 
-        print('GroqWrapper invoke...')
+        self.logger.debug('GroqProvider invoke...')
 
         messages = [
             {'role': 'system', 'content': system_prompt},
@@ -32,31 +25,17 @@ class GroqProvider:
         response = self.client.chat.completions.create(
             model=self.model_id,
             messages=messages,
-            max_completion_tokens=1024,
-            temperature=0.5,
-            top_p=1,
-            stop=['\n\nHuman:', '\n\nAssistant', '</function_calls>'],
+            max_completion_tokens=self.DEFAULT_MAX_TOKENS,
+            temperature=self.DEFAULT_TEMPERATURE,
+            top_p=self.DEFAULT_TOP_P,
+            stop=self.STOP_SEQUENCES,
         )
 
-        self.trace_invocation_result(response)
-
         completion_text = response.choices[0].message.content
+        self.trace_invocation_result_basic(completion_text)
+        
         usage = self._extract_token_usage(response)
-
         return completion_text, usage
-
-    def trace_invocation_info(self, user_prompt, model_id, messages):
-        """Log debug information before the API call."""
-        self.logger.debug('Invocation details:')
-        self.logger.debug('model_id: %s', model_id)
-        self.logger.debug('user prompt: %s', user_prompt)
-        self.logger.debug('messages: %s', messages)
-
-    def trace_invocation_result(self, response):
-        """Log debug information after receiving the API response."""
-        self.logger.debug('Response details:')
-        self.logger.debug('- Completion text: %s', response.choices[0].message.content)
-        self.logger.debug('Invocation completed.')
 
     def _extract_token_usage(self, response):
         return TokenUsage(

@@ -1,26 +1,19 @@
 from openai import OpenAI
-from .logger_config import setup_logger
+from .base_provider import BaseProvider
 from .token_usage import TokenUsage
 
 
-class OpenAIProvider:
+class OpenAIProvider(BaseProvider):
     def __init__(self, model_id: str, debug: bool = False):
-        self.name = 'GPT4o-OpenAI'
+        super().__init__('GPT4o-OpenAI', model_id, debug)
         self.client = OpenAI()
-        self.model_id = model_id
-        self.logger = setup_logger(__name__, debug)
-        self.logger.debug('OpenAIWrapper initialized')
-
-    @staticmethod
-    def is_empty(s):
-        return s.strip() == ''
 
     def invoke(self, system_prompt: str, user_prompt: str):
         """Invoke OpenAI model with system and user prompts."""
         if self.is_empty(user_prompt):
             return ' '
 
-        print('OpenAIWrapper invoke...')
+        self.logger.debug('OpenAIProvider invoke...')
 
         messages = [{'role': 'system', 'content': system_prompt}, {'role': 'user', 'content': user_prompt}]
 
@@ -29,32 +22,17 @@ class OpenAIProvider:
         response = self.client.chat.completions.create(
             model=self.model_id,
             messages=messages,
-            max_tokens=1024,
-            temperature=0.5,
-            top_p=1,
-            stop=['\n\nHuman:', '\n\nAssistant', '</function_calls>'],
+            max_tokens=self.DEFAULT_MAX_TOKENS,
+            temperature=self.DEFAULT_TEMPERATURE,
+            top_p=self.DEFAULT_TOP_P,
+            stop=self.STOP_SEQUENCES,
         )
 
-        self.trace_invocation_result(response)
-
         completion_text = response.choices[0].message.content
+        self.trace_invocation_result_basic(completion_text, response.usage)
+        
         usage = self._extract_token_usage(response)
-
         return completion_text, usage
-
-    def trace_invocation_info(self, user_prompt, model_id, messages):
-        """Log debug information before the API call."""
-        self.logger.debug('Invocation details:')
-        self.logger.debug('model_id: %s', model_id)
-        self.logger.debug('user prompt: %s', user_prompt)
-        self.logger.debug('messages: %s', messages)
-
-    def trace_invocation_result(self, response):
-        """Log debug information after receiving the API response."""
-        self.logger.debug('Response details:')
-        self.logger.debug('- Completion text: %s', response.choices[0].message.content)
-        self.logger.debug('- Usage: %s', response.usage)
-        self.logger.debug('Invocation completed.')
 
     def _extract_token_usage(self, response):
         return TokenUsage(

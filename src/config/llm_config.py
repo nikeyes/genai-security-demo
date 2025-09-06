@@ -1,12 +1,12 @@
-from config.anthropic_provider import AnthropicProvider
-from config.bedrock_converse_provider import BedrockConverseProvider
-from config.bedrock_provider import BedrockClaudeProvider
-from config.groq_provider import GroqProvider
-from config.openai_provider import OpenAIProvider
+from .anthropic_provider import AnthropicProvider
+from .bedrock_converse_provider import BedrockConverseProvider
+from .bedrock_provider import BedrockClaudeProvider
+from .groq_provider import GroqProvider
+from .openai_provider import OpenAIProvider
 
 
 class LLMConfig:
-    # Model IDs
+    # Model IDs (kept for backward compatibility with RAG)
     GROQ_MODEL_ID = 'llama-3.3-70b-versatile'
     OPENAI_MODEL_ID = 'gpt-4o-mini'
     BEDROCK_MODEL_ID = 'anthropic.claude-3-haiku-20240307-v1:0'
@@ -16,13 +16,18 @@ class LLMConfig:
     # Security configuration
     LLAMA_SECURITY_FAMILY = True
 
+    # Provider configurations: [ClassName, model_id]
+    PROVIDERS = {
+        'groq': [GroqProvider, GROQ_MODEL_ID],
+        'openai': [OpenAIProvider, OPENAI_MODEL_ID], 
+        'bedrock': [BedrockClaudeProvider, BEDROCK_MODEL_ID],
+        'bedrock_converse': [BedrockConverseProvider, BEDROCK_CONVERSE_MODEL_ID],
+        'anthropic': [AnthropicProvider, ANTHROPIC_MODEL_ID],
+    }
+
     def __init__(self, debug=False):
         self.debug = debug
-        self.groq_llm = None
-        self.openai_llm = None
-        self.bedrock_llm = None
-        self.bedrock_converse_llm = None
-        self.anthropic_llm = None
+        self.providers = {}
         self.default_unprotected_llm = None
         self.default_secure_llm = None
 
@@ -32,30 +37,32 @@ class LLMConfig:
         return self
 
     def _initialize_providers(self):
-        self.groq_llm = GroqProvider(model_id=self.GROQ_MODEL_ID, debug=self.debug)
-        self.openai_llm = OpenAIProvider(model_id=self.OPENAI_MODEL_ID, debug=self.debug)
-        self.bedrock_llm = BedrockClaudeProvider(model_id=self.BEDROCK_MODEL_ID, debug=self.debug)
-        self.bedrock_converse_llm = BedrockConverseProvider(model_id=self.BEDROCK_MODEL_ID, debug=self.debug)
-        self.anthropic_llm = AnthropicProvider(model_id=self.ANTHROPIC_MODEL_ID, debug=self.debug)
+        for name, (provider_class, model_id) in self.PROVIDERS.items():
+            self.providers[name] = provider_class(model_id=model_id, debug=self.debug)
 
     def _set_defaults(self):
-        self.default_unprotected_llm = self.bedrock_converse_llm
-        self.default_secure_llm = self.bedrock_converse_llm
+        self.default_unprotected_llm = self.providers['bedrock_converse']
+        self.default_secure_llm = self.providers['bedrock_converse']
 
+    def get_provider(self, name):
+        """Get provider by name. Easier to add new providers."""
+        return self.providers.get(name)
+
+    # Backwards compatibility methods
     def get_groq_llm(self):
-        return self.groq_llm
+        return self.providers['groq']
 
     def get_openai_llm(self):
-        return self.openai_llm
+        return self.providers['openai']
 
     def get_bedrock_llm(self):
-        return self.bedrock_llm
+        return self.providers['bedrock']
 
     def get_anthropic_llm(self):
-        return self.anthropic_llm
+        return self.providers['anthropic']
 
     def get_bedrock_converse_llm(self):
-        return self.bedrock_converse_llm
+        return self.providers['bedrock_converse']
 
     def get_default_unprotected_llm(self):
         return self.default_unprotected_llm
