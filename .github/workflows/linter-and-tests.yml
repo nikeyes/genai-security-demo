@@ -20,7 +20,7 @@ jobs:
           echo "$HOME/.local/bin" >> $GITHUB_PATH
       - name: Install dependencies
         run: |
-          uv sync
+          uv sync --all-extras
       - name: Analysing the code with Ruff
         run: |
           make lint
