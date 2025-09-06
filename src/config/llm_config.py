@@ -10,7 +10,7 @@ class LLMConfig:
     GROQ_MODEL_ID = 'llama-3.3-70b-versatile'
     OPENAI_MODEL_ID = 'gpt-4o-mini'
     BEDROCK_MODEL_ID = 'anthropic.claude-3-haiku-20240307-v1:0'
-    BEDROCK_CONVERSE_MODEL_ID = 'eu.amazon.nova-lite-v1:0'
+    BEDROCK_CONVERSE_MODEL_ID = 'anthropic.claude-3-haiku-20240307-v1:0'  #'eu.amazon.nova-lite-v1:0'
     ANTHROPIC_MODEL_ID = 'claude-3-haiku-20240307'
 
     # Security configuration

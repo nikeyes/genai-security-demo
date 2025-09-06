@@ -36,4 +36,4 @@ class AnthropicProvider(BaseProvider):
         return completion_text, usage
 
     def _extract_token_usage(self, response):
-        return TokenUsage(input_tokens=response.usage.input_tokens, output_tokens=response.usage.output_tokens, provider_name=self.name)
+        return TokenUsage(input_tokens=response.usage.input_tokens, output_tokens=response.usage.output_tokens)

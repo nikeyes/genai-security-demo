@@ -15,7 +15,7 @@ class TestOutputGuardrailBot(unittest.TestCase):
     def test_scan_no_code_output(self):
         secure_code = """I'm afraid I'm not an expert code developer.
                          I'm Claude, an AI assistant created by Anthropic to be helpful, harmless, and honest."""
-        mock_usage = TokenUsage(10, 5, 'TestProvider')
+        mock_usage = TokenUsage(10, 5)
 
         output = asyncio.run(self.bot.scan_llm_output(secure_code, mock_usage))
 
@@ -25,7 +25,7 @@ class TestOutputGuardrailBot(unittest.TestCase):
 
     def test_scan_secure_code_output(self):
         secure_code = 'def add(a, b):\n    return a + b'
-        mock_usage = TokenUsage(8, 12, 'TestProvider')
+        mock_usage = TokenUsage(8, 12)
 
         output = asyncio.run(self.bot.scan_llm_output(secure_code, mock_usage))
 
@@ -40,7 +40,7 @@ class TestOutputGuardrailBot(unittest.TestCase):
             md5_hash = hashlib.md5(input_string.encode('utf-8')).hexdigest()
             return md5_hash
         """
-        mock_usage = TokenUsage(15, 20, 'TestProvider')
+        mock_usage = TokenUsage(15, 20)
 
         output = asyncio.run(self.bot.scan_llm_output(insecure_code, mock_usage))
 

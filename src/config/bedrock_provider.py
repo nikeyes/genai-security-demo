@@ -50,6 +50,4 @@ class BedrockClaudeProvider(BaseProvider):
         return completion_text, usage
 
     def _extract_token_usage(self, completion):
-        return TokenUsage(
-            input_tokens=completion['usage']['input_tokens'], output_tokens=completion['usage']['output_tokens'], provider_name=self.name
-        )
+        return TokenUsage(input_tokens=completion['usage']['input_tokens'], output_tokens=completion['usage']['output_tokens'])

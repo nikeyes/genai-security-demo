@@ -16,7 +16,6 @@ class TestTokenUsageTracking:
         assert usage is not None
         assert usage.input_tokens > 0
         assert usage.output_tokens > 0
-        assert usage.provider_name == 'Bedrock-Claude-Converse'
 
     def test_bedrock_legacy_returns_token_usage(self):
         provider = BedrockClaudeProvider('anthropic.claude-3-haiku-20240307-v1:0')
@@ -26,7 +25,6 @@ class TestTokenUsageTracking:
         assert usage is not None
         assert usage.input_tokens > 0
         assert usage.output_tokens > 0
-        assert usage.provider_name == 'Bedrock-Claude'
 
     def test_openai_returns_token_usage(self):
         provider = OpenAIProvider('gpt-4o-mini')
@@ -36,7 +34,6 @@ class TestTokenUsageTracking:
         assert usage is not None
         assert usage.input_tokens > 0
         assert usage.output_tokens > 0
-        assert usage.provider_name == 'GPT4o-OpenAI'
 
     def test_anthropic_returns_token_usage(self):
         provider = AnthropicProvider('claude-3-haiku-20240307')
@@ -46,7 +43,6 @@ class TestTokenUsageTracking:
         assert usage is not None
         assert usage.input_tokens > 0
         assert usage.output_tokens > 0
-        assert usage.provider_name == 'Anthropic-Claude'
 
     def test_groq_returns_token_usage(self):
         provider = GroqProvider('llama-3.1-8b-instant')
@@ -56,4 +52,3 @@ class TestTokenUsageTracking:
         assert usage is not None
         assert usage.input_tokens > 0
         assert usage.output_tokens > 0
-        assert usage.provider_name == 'Llama-Groq'

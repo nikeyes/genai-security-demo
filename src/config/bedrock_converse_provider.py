@@ -56,6 +56,4 @@ class BedrockConverseProvider(BaseProvider):
         return completion_text, usage
 
     def _extract_token_usage(self, response):
-        return TokenUsage(
-            input_tokens=response['usage']['inputTokens'], output_tokens=response['usage']['outputTokens'], provider_name=self.name
-        )
+        return TokenUsage(input_tokens=response['usage']['inputTokens'], output_tokens=response['usage']['outputTokens'])

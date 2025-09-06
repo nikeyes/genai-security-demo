@@ -35,6 +35,4 @@ class OpenAIProvider(BaseProvider):
         return completion_text, usage
 
     def _extract_token_usage(self, response):
-        return TokenUsage(
-            input_tokens=response.usage.prompt_tokens, output_tokens=response.usage.completion_tokens, provider_name=self.name
-        )
+        return TokenUsage(input_tokens=response.usage.prompt_tokens, output_tokens=response.usage.completion_tokens)
