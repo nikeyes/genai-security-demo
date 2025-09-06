@@ -22,7 +22,7 @@ uv run python chatbot_console.py
 
 ### Testing
 ```bash
-# Run all tests locally (requires API keys)
+# Run all tests locally (requires API keys) - RECOMMENDED
 make local-tests
 
 # Run CI tests (excludes real provider tests)  

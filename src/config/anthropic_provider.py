@@ -1,5 +1,6 @@
 import anthropic
 from .logger_config import setup_logger
+from .token_usage import TokenUsage
 
 
 class AnthropicProvider:
@@ -30,8 +31,9 @@ class AnthropicProvider:
         self.trace_invocation_result(response)
 
         completion_text = response.content[0].text
+        usage = self._extract_token_usage(response)
 
-        return completion_text
+        return completion_text, usage
 
     def trace_invocation_info(self, user_prompt, model_id, messages):
         """Log debug information before the API call."""
@@ -46,3 +48,6 @@ class AnthropicProvider:
         self.logger.debug('- Completion text: %s', response.content[0].text)
         self.logger.debug('- Usage: %s', response.usage)
         self.logger.debug('Invocation completed.')
+
+    def _extract_token_usage(self, response):
+        return TokenUsage(input_tokens=response.usage.input_tokens, output_tokens=response.usage.output_tokens, provider_name=self.name)

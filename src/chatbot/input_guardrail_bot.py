@@ -4,6 +4,7 @@ from transformers import (
     AutoModelForSequenceClassification,
     AutoTokenizer,
 )
+from config.token_usage import format_token_usage
 
 
 class InputGuardrailsBot:
@@ -29,7 +30,7 @@ class InputGuardrailsBot:
     • Action Required: Please rephrase your input
     """
 
-        llm_response = self.llm.invoke(self.system_prompt, user_prompt)
+        llm_response, usage = self.llm.invoke(self.system_prompt, user_prompt)
         return f"""
     ✅🔒 Security Check Passed
     {'=' * 40}
@@ -39,6 +40,8 @@ class InputGuardrailsBot:
     {'‾' * 40}
 
     {llm_response}
+    
+    {format_token_usage(usage)}
     """
 
     def get_class_probabilities(self, text, temperature=1.0, device='cpu'):

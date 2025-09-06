@@ -17,7 +17,10 @@ class TestOpenAIProvider(unittest.TestCase):
         system_prompt = 'You are a helpful assistant.'
         user_prompt = 'Who are your creator?'
 
-        result = self.provider.invoke(system_prompt, user_prompt)
+        result, usage = self.provider.invoke(system_prompt, user_prompt)
         self.assertIsInstance(result, str)
         self.assertTrue(len(result) > 0)
         self.assertIn('OpenAI', result)
+        self.assertIsNotNone(usage)
+        self.assertGreater(usage.input_tokens, 0)
+        self.assertGreater(usage.output_tokens, 0)

@@ -87,25 +87,25 @@ aws sso login --profile data-dev
 ```shell
 aws sso login --profile data-dev
 export AWS_DEFAULT_PROFILE=data-dev
-poetry run python chatbot_webui.py
+uv run python src/chatbot_webui.py
 ```
 
 ### 3.2 With Groq
 ```shell
 export GROQ_API_KEY=YOUR_API_KEY
-poetry run python chatbot_webui.py
+uv run python src/chatbot_webui.py
 ```
 
 ### 3.3 With OpenAI
 ```shell
 export OPENAI_API_KEY=YOUR_API_KEY
-poetry run python chatbot_webui.py
+uv run src/python chatbot_webui.py
 ```
 
 ### 3.4 With Anthropic
 ```shell
 export ANTHROPIC_API_KEY=YOUR_API_KEY
-poetry run python chatbot_webui.py
+uv run python src/chatbot_webui.py
 ```
 
 ## 4. Testing

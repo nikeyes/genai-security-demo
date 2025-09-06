@@ -1,6 +1,7 @@
 import boto3
 
 from .logger_config import setup_logger
+from .token_usage import TokenUsage
 
 
 class BedrockConverseProvider:
@@ -53,8 +54,9 @@ class BedrockConverseProvider:
         self.trace_invocation_result(response)
 
         completion_text = response['output']['message']['content'][0]['text']
+        usage = self._extract_token_usage(response)
 
-        return completion_text
+        return completion_text, usage
 
     def trace_invocation_info(self, user_prompt, model_id, messages, system_messages):
         self.logger.debug('Invocation details:')
@@ -71,3 +73,8 @@ class BedrockConverseProvider:
         self.logger.debug('- Output tokens: %s', output_tokens)
         self.logger.debug('- Completion text: %s', response['output']['message']['content'][0]['text'])
         self.logger.debug('Invocation completed.')
+
+    def _extract_token_usage(self, response):
+        return TokenUsage(
+            input_tokens=response['usage']['inputTokens'], output_tokens=response['usage']['outputTokens'], provider_name=self.name
+        )

@@ -1,5 +1,6 @@
 from openai import OpenAI
 from .logger_config import setup_logger
+from .token_usage import TokenUsage
 
 
 class OpenAIProvider:
@@ -37,8 +38,9 @@ class OpenAIProvider:
         self.trace_invocation_result(response)
 
         completion_text = response.choices[0].message.content
+        usage = self._extract_token_usage(response)
 
-        return completion_text
+        return completion_text, usage
 
     def trace_invocation_info(self, user_prompt, model_id, messages):
         """Log debug information before the API call."""
@@ -53,3 +55,8 @@ class OpenAIProvider:
         self.logger.debug('- Completion text: %s', response.choices[0].message.content)
         self.logger.debug('- Usage: %s', response.usage)
         self.logger.debug('Invocation completed.')
+
+    def _extract_token_usage(self, response):
+        return TokenUsage(
+            input_tokens=response.usage.prompt_tokens, output_tokens=response.usage.completion_tokens, provider_name=self.name
+        )

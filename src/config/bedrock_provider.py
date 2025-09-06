@@ -1,6 +1,7 @@
 import json
 import boto3
 from .logger_config import setup_logger
+from .token_usage import TokenUsage
 
 
 class BedrockClaudeProvider:
@@ -48,8 +49,9 @@ class BedrockClaudeProvider:
         self.trace_invocation_result(completion, output_list)
 
         completion_text = output_list[0]['text']
+        usage = self._extract_token_usage(completion)
 
-        return completion_text
+        return completion_text, usage
 
     def trace_invocation_info(self, user_prompt, model_id, body):
         self.logger.debug('Invocation details:')
@@ -67,3 +69,8 @@ class BedrockClaudeProvider:
         for output in output_list:
             self.logger.debug(output['text'])
         self.logger.debug('Invocation completed.')
+
+    def _extract_token_usage(self, completion):
+        return TokenUsage(
+            input_tokens=completion['usage']['input_tokens'], output_tokens=completion['usage']['output_tokens'], provider_name=self.name
+        )

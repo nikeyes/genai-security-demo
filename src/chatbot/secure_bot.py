@@ -1,6 +1,7 @@
 import asyncio
 
 from prompts import SECURE_SYSTEM_PROMPT, INSTRUCTION_CHANGE_GUARDRAIL_SYSTEM_PROMPT, SANDWICH_BOTTOM
+from config.token_usage import format_token_usage
 
 
 class SecureBot:
@@ -16,7 +17,8 @@ class SecureBot:
     async def instruction_change_guardrail(self, user_prompt):
         print('Checking instruction_change guardrail')
 
-        return self.llm.invoke(INSTRUCTION_CHANGE_GUARDRAIL_SYSTEM_PROMPT, user_prompt)
+        response, usage = self.llm.invoke(INSTRUCTION_CHANGE_GUARDRAIL_SYSTEM_PROMPT, user_prompt)
+        return response
 
     async def execute_chat_with_guardrail(self, user_prompt):
         instruction_change_guardrail_task = asyncio.create_task(self.instruction_change_guardrail(user_prompt))
@@ -31,8 +33,12 @@ class SecureBot:
                     print(self.INSTRUCTION_CHANGE_GUARDRAIL_TRIGGERED_MESSAGE)
                     return "Sorry I won't do that. [GUARDRAIL]"
                 elif chat_task in done:
-                    chat_response = chat_task.result()
-                    return self.check_system_prompt_leak(chat_response)
+                    chat_response, chat_usage = chat_task.result()
+                    checked_response = self.check_system_prompt_leak(chat_response)
+                    # Only show tokens if response wasn't blocked
+                    if checked_response.startswith("Sorry I won't do that."):
+                        return checked_response
+                    return f'{checked_response}\n\n{format_token_usage(chat_usage)}'
             else:
                 await asyncio.sleep(0.1)
 
@@ -44,4 +50,5 @@ class SecureBot:
         return chat_response
 
     async def execute_chat_with_sandwich(self, user_prompt):
-        return await self.chat(user_prompt + SANDWICH_BOTTOM)
+        response, usage = await self.chat(user_prompt + SANDWICH_BOTTOM)
+        return f'{response}\n\n{format_token_usage(usage)}'
