@@ -4,7 +4,7 @@ from .logger_config import setup_logger
 
 class BaseProvider(ABC):
     """Base class for all LLM providers. Eliminates code duplication."""
-    
+
     # Common constants
     STOP_SEQUENCES = ['\n\nHuman:', '\n\nAssistant', '</function_calls>']
     DEFAULT_MAX_TOKENS = 1024
@@ -15,7 +15,7 @@ class BaseProvider(ABC):
         self.name = name
         self.model_id = model_id
         self.logger = setup_logger(__name__, debug)
-        self.logger.debug(f'{self.__class__.__name__} initialized')
+        self.logger.debug('%s initialized', self.__class__.__name__)
 
     @staticmethod
     def is_empty(s):
@@ -46,7 +46,7 @@ class BaseProvider(ABC):
         """Log invocation result with token details."""
         self.logger.debug('Response details:')
         self.logger.debug('- Input tokens: %s', input_tokens)
-        self.logger.debug('- Output tokens: %s', output_tokens)  
+        self.logger.debug('- Output tokens: %s', output_tokens)
         self.logger.debug('- Completion text: %s', response_text)
         self.logger.debug('Invocation completed.')
 

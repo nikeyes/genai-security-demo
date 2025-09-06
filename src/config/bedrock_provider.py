@@ -41,11 +41,11 @@ class BedrockClaudeProvider(BaseProvider):
 
         output_list = completion.get('content', [])
         completion_text = output_list[0]['text']
-        
+
         input_tokens = completion['usage']['input_tokens']
         output_tokens = completion['usage']['output_tokens']
         self.trace_invocation_result_with_tokens(input_tokens, output_tokens, completion_text)
-        
+
         usage = self._extract_token_usage(completion)
         return completion_text, usage
 

@@ -30,7 +30,7 @@ class OpenAIProvider(BaseProvider):
 
         completion_text = response.choices[0].message.content
         self.trace_invocation_result_basic(completion_text, response.usage)
-        
+
         usage = self._extract_token_usage(response)
         return completion_text, usage
 

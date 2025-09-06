@@ -33,7 +33,7 @@ class GroqProvider(BaseProvider):
 
         completion_text = response.choices[0].message.content
         self.trace_invocation_result_basic(completion_text)
-        
+
         usage = self._extract_token_usage(response)
         return completion_text, usage
 

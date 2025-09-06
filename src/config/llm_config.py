@@ -19,7 +19,7 @@ class LLMConfig:
     # Provider configurations: [ClassName, model_id]
     PROVIDERS = {
         'groq': [GroqProvider, GROQ_MODEL_ID],
-        'openai': [OpenAIProvider, OPENAI_MODEL_ID], 
+        'openai': [OpenAIProvider, OPENAI_MODEL_ID],
         'bedrock': [BedrockClaudeProvider, BEDROCK_MODEL_ID],
         'bedrock_converse': [BedrockConverseProvider, BEDROCK_CONVERSE_MODEL_ID],
         'anthropic': [AnthropicProvider, ANTHROPIC_MODEL_ID],

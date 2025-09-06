@@ -20,18 +20,18 @@ class AnthropicProvider(BaseProvider):
         self.trace_invocation_info(user_prompt, self.model_id, messages)
 
         response = self.client.messages.create(
-            model=self.model_id, 
-            system=system_prompt, 
-            messages=messages, 
+            model=self.model_id,
+            system=system_prompt,
+            messages=messages,
             max_tokens=self.DEFAULT_MAX_TOKENS,
             temperature=self.DEFAULT_TEMPERATURE,
             top_p=self.DEFAULT_TOP_P,
-            stop_sequences=self.STOP_SEQUENCES
+            stop_sequences=self.STOP_SEQUENCES,
         )
 
         completion_text = response.content[0].text
         self.trace_invocation_result_basic(completion_text, response.usage)
-        
+
         usage = self._extract_token_usage(response)
         return completion_text, usage
 
