@@ -28,10 +28,13 @@ make local-tests
 # Run CI tests (excludes real provider tests)  
 make ci-tests
 
-# Individual test commands
-uv run pytest -v --cov=src --no-cov-on-fail --cov-report=term-missing tests/
-uv run pytest -v tests/ -m "not real_provider"  # CI-safe tests only
-```
+# Run E2E tests (tests the web UI)
+make e2e-tests
+
+# Run E2E tests with browser visible (for debugging)
+make e2e-tests-headed
+
+
 
 ### Code Quality
 ```bash
@@ -40,7 +43,6 @@ make lint-fix
 
 # Check linting only
 make lint
-uv run ruff check
 ```
 
 ## Architecture
@@ -94,7 +96,7 @@ export AWS_DEFAULT_PROFILE=PROFILE_NAME
 - **Unit tests** in `tests/unit_tests/`
 - **Integration tests** in `tests/integration_tests/` (marked as `real_provider`)  
 - **Approval tests** in `tests/approval_tests/`
-- Use `-m "not real_provider"` to skip tests requiring real API calls
+- Use `-m "not real_provider and not e2e"` to skip tests requiring real API calls
 
 ## Security Considerations
 

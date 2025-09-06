@@ -34,7 +34,6 @@ extend-include = ["*.ipynb"]
 line-length = 140
 # Added from flake8 config
 lint.select = ["E", "F", "G"] # G is the flake8-logging-format extension
-exclude = [".git", ".venv"]
 lint.ignore = [
     "S101", # Use of assert detected (useless with pytest)
     "S301", # It is OK to use Pickle in this project
@@ -46,6 +45,7 @@ lint.ignore = [
     "PLR0914", # too-many-locals
     "PLW0603", # global-statement
 ]
+exclude = [".git", ".venv"]
 
 [tool.ruff.format]
 quote-style = "single"
@@ -71,15 +71,22 @@ max-complexity = 8
 
 
 [tool.pytest.ini_options]
-addopts = "--strict-markers"
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers"
+]
 markers = [
     "real_provider: marks tests to avoid con Github Actions (deselect with '-m \"not real_provider\"')",
+    "e2e: marks tests as end-to-end (may require running services)",  
+    "slow: marks tests as slow running"
 ]
 testpaths = [
     "tests",
     "tests/integration_tests",
     "tests/unit_tests",
     "tests/approval_tests",
+    "tests/e2e_tests"
 ]
 pythonpath = ["src"]
 python_files = ["test_*.py", "*_test.py", "*_should.py"]
@@ -92,3 +99,10 @@ packages = ["src"]
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "playwright>=1.55.0",
+    "pytest-playwright>=0.7.0",
+    "requests>=2.32.5",
+]

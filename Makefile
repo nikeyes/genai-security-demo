@@ -9,6 +9,7 @@ install:
 # 	rm ~/.local/bin/uv ~/.local/bin/uvx
 	@command -v uv >/dev/null 2>&1 || { echo "Installing uv..."; curl -LsSf https://astral.sh/uv/install.sh | sh; }
 	uv sync --all-extras
+	uv run playwright install
 
 .PHONY: lint-fix
 lint-fix:
@@ -26,4 +27,12 @@ local-tests:
 
 .PHONY: ci-tests
 ci-tests:
-	uv run pytest -v --cov=src --no-cov-on-fail --cov-report=term-missing tests/ -m "not real_provider"
+	uv run pytest -v --cov=src --no-cov-on-fail --cov-report=term-missing tests/ -m "not real_provider and not e2e"
+
+.PHONY: e2e-tests
+e2e-tests:
+	uv run python run_e2e_tests.py
+
+.PHONY: e2e-tests-headed
+e2e-tests-headed:
+	uv run python run_e2e_tests.py --headed

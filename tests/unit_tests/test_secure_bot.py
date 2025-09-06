@@ -3,8 +3,8 @@ import unittest
 from unittest.mock import Mock
 
 from chatbot.secure_bot import SecureBot
-from prompts import SECURE_SYSTEM_PROMPT, INSTRUCTION_CHANGE_GUARDRAIL_SYSTEM_PROMPT, SANDWICH_BOTTOM
-from src.config.token_usage import TokenUsage
+from config.token_usage import TokenUsage
+from prompts import INSTRUCTION_CHANGE_GUARDRAIL_SYSTEM_PROMPT, SANDWICH_BOTTOM, SECURE_SYSTEM_PROMPT
 
 
 class TestSecureBot(unittest.TestCase):

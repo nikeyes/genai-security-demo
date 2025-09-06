@@ -8,11 +8,7 @@ class BedrockConverseProvider(BaseProvider):
     def __init__(self, model_id: str, debug: bool = False):
         super().__init__('Bedrock-Claude-Converse', model_id, debug)
         # Configure timeout to prevent hanging
-        config = Config(
-            read_timeout=30,
-            connect_timeout=10,
-            retries={'max_attempts': 2}
-        )
+        config = Config(read_timeout=30, connect_timeout=10, retries={'max_attempts': 2})
         self.client = boto3.client(service_name='bedrock-runtime', region_name='eu-central-1', config=config)
 
     def invoke(self, system_prompt: str, user_prompt: str):
