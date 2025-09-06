@@ -19,6 +19,7 @@ dependencies = [
     "codeshield>=1.0.1",
     "openai>=1.68.2",
     "groq>=0.20.0",
+    "numpy<2",
 ]
 
 [project.optional-dependencies]

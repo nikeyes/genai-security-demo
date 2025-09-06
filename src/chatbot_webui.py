@@ -23,4 +23,4 @@ else:
 
 demo = gr.TabbedInterface(demos, demo_names)
 
-demo.launch()
+demo.launch(server_port=7860, share=False)

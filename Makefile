@@ -36,3 +36,8 @@ e2e-tests:
 .PHONY: e2e-tests-headed
 e2e-tests-headed:
 	uv run python run_e2e_tests.py --headed
+
+.PHONY: kill-web-server
+kill-web-server:
+	@echo "Killing processes using port 7860..."
+	@lsof -ti:7860 | xargs kill -9 2>/dev/null

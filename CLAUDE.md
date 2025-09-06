@@ -34,7 +34,9 @@ make e2e-tests
 # Run E2E tests with browser visible (for debugging)
 make e2e-tests-headed
 
-
+# Kill any processes using port 7860 (if web server is stuck)
+make kill-web-server
+```
 
 ### Code Quality
 ```bash
