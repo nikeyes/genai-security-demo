@@ -5,7 +5,7 @@ from llama_index.embeddings.bedrock import BedrockEmbedding
 from llama_index.llms.bedrock import Bedrock
 
 from config.llm_config import LLMConfig
-from prompts import RAG_INPUT_SENSITIVITY_CHECK_SYSTEM_PROMPT
+from config.security_config import SecurityConfig
 
 # from llama_index.readers.web import SimpleWebPageReader
 
@@ -84,7 +84,7 @@ class Rag:
         llm = self.llm_config.get_bedrock_llm()
         filtered = []
         for doc in local_data:
-            assessment = llm.invoke(RAG_INPUT_SENSITIVITY_CHECK_SYSTEM_PROMPT, doc.text)
+            assessment = llm.invoke(SecurityConfig.RAG_INPUT_SENSITIVITY_PROMPT, doc.text)
             print(f'{assessment} determined for: {doc}')
             if assessment == 'not_sensitive':
                 filtered.append(doc)

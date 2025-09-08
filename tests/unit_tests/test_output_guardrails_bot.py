@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import MagicMock
 
 from chatbot.output_guardrail_bot import OutputGuardrailsBot
-from src.config.token_usage import TokenUsage
+from config.token_usage import TokenUsage
 
 
 class TestOutputGuardrailBot(unittest.TestCase):
