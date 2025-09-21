@@ -1,4 +1,5 @@
 """Unit tests for BedrockConverseProvider structure and tool configuration."""
+
 import unittest
 from unittest.mock import Mock, patch
 from src.config.bedrock_converse_provider import BedrockConverseProvider
@@ -21,7 +22,7 @@ class TestBedrockConverseProviderStructure(unittest.TestCase):
                 'toolSpec': {
                     'name': 'test_tool',
                     'description': 'A test tool',
-                    'inputSchema': {'json': {'type': 'object', 'properties': {}, 'required': []}}
+                    'inputSchema': {'json': {'type': 'object', 'properties': {}, 'required': []}},
                 }
             }
         ]
@@ -47,16 +48,13 @@ class TestBedrockConverseProviderStructure(unittest.TestCase):
                     'json': {
                         'type': 'object',
                         'properties': {
-                            'operation': {
-                                'type': 'string',
-                                'enum': ['add', 'multiply']
-                            },
+                            'operation': {'type': 'string', 'enum': ['add', 'multiply']},
                             'a': {'type': 'number'},
-                            'b': {'type': 'number'}
+                            'b': {'type': 'number'},
                         },
-                        'required': ['operation', 'a', 'b']
+                        'required': ['operation', 'a', 'b'],
                     }
-                }
+                },
             }
         }
 
@@ -79,17 +77,7 @@ class TestBedrockConverseProviderStructure(unittest.TestCase):
 
         # Mock the client response to avoid actual AWS calls
         mock_client = Mock()
-        mock_response = {
-            'output': {
-                'message': {
-                    'content': [{'text': 'test response'}]
-                }
-            },
-            'usage': {
-                'inputTokens': 10,
-                'outputTokens': 20
-            }
-        }
+        mock_response = {'output': {'message': {'content': [{'text': 'test response'}]}}, 'usage': {'inputTokens': 10, 'outputTokens': 20}}
         mock_client.converse.return_value = mock_response
         provider.client = mock_client
 
@@ -100,4 +88,4 @@ class TestBedrockConverseProviderStructure(unittest.TestCase):
         except TypeError:
             success = False
 
-        self.assertTrue(success, "invoke method should accept tool_handler parameter")
+        self.assertTrue(success, 'invoke method should accept tool_handler parameter')

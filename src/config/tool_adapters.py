@@ -14,13 +14,7 @@ class BedrockToolAdapter(ToolAdapter):
                 'toolSpec': {
                     'name': tool.name,
                     'description': tool.description,
-                    'inputSchema': {
-                        'json': {
-                            'type': 'object',
-                            'properties': tool.parameters,
-                            'required': tool.required
-                        }
-                    }
+                    'inputSchema': {'json': {'type': 'object', 'properties': tool.parameters, 'required': tool.required}},
                 }
             }
             bedrock_tools.append(bedrock_tool)
@@ -34,11 +28,7 @@ class BedrockToolAdapter(ToolAdapter):
         for block in message_content:
             if block.get('toolUse'):
                 tool_use = block['toolUse']
-                tool_calls.append({
-                    'tool_use_id': tool_use['toolUseId'],
-                    'tool_name': tool_use['name'],
-                    'tool_input': tool_use['input']
-                })
+                tool_calls.append({'tool_use_id': tool_use['toolUseId'], 'tool_name': tool_use['name'], 'tool_input': tool_use['input']})
 
         return tool_calls
 
@@ -46,12 +36,7 @@ class BedrockToolAdapter(ToolAdapter):
         """Format tool results for Bedrock."""
         formatted_results = []
         for result in results:
-            formatted_results.append({
-                'toolResult': {
-                    'toolUseId': result.tool_use_id,
-                    'content': [{'text': result.content}]
-                }
-            })
+            formatted_results.append({'toolResult': {'toolUseId': result.tool_use_id, 'content': [{'text': result.content}]}})
         return formatted_results
 
     def supports_tools(self) -> bool:
@@ -70,12 +55,8 @@ class OpenAIToolAdapter(ToolAdapter):
                 'function': {
                     'name': tool.name,
                     'description': tool.description,
-                    'parameters': {
-                        'type': 'object',
-                        'properties': tool.parameters,
-                        'required': tool.required
-                    }
-                }
+                    'parameters': {'type': 'object', 'properties': tool.parameters, 'required': tool.required},
+                },
             }
             openai_tools.append(openai_tool)
         return openai_tools
@@ -87,11 +68,13 @@ class OpenAIToolAdapter(ToolAdapter):
 
         if hasattr(message, 'tool_calls') and message.tool_calls:
             for tool_call in message.tool_calls:
-                tool_calls.append({
-                    'tool_use_id': tool_call.id,
-                    'tool_name': tool_call.function.name,
-                    'tool_input': json.loads(tool_call.function.arguments)
-                })
+                tool_calls.append(
+                    {
+                        'tool_use_id': tool_call.id,
+                        'tool_name': tool_call.function.name,
+                        'tool_input': json.loads(tool_call.function.arguments),
+                    }
+                )
 
         return tool_calls
 
@@ -99,11 +82,7 @@ class OpenAIToolAdapter(ToolAdapter):
         """Format tool results for OpenAI."""
         messages = []
         for result in results:
-            messages.append({
-                'tool_call_id': result.tool_use_id,
-                'role': 'tool',
-                'content': result.content
-            })
+            messages.append({'tool_call_id': result.tool_use_id, 'role': 'tool', 'content': result.content})
         return messages
 
     def supports_tools(self) -> bool:
@@ -122,12 +101,8 @@ class GroqToolAdapter(ToolAdapter):
                 'function': {
                     'name': tool.name,
                     'description': tool.description,
-                    'parameters': {
-                        'type': 'object',
-                        'properties': tool.parameters,
-                        'required': tool.required
-                    }
-                }
+                    'parameters': {'type': 'object', 'properties': tool.parameters, 'required': tool.required},
+                },
             }
             groq_tools.append(groq_tool)
         return groq_tools
@@ -139,11 +114,13 @@ class GroqToolAdapter(ToolAdapter):
 
         if hasattr(message, 'tool_calls') and message.tool_calls:
             for tool_call in message.tool_calls:
-                tool_calls.append({
-                    'tool_use_id': tool_call.id,
-                    'tool_name': tool_call.function.name,
-                    'tool_input': json.loads(tool_call.function.arguments)
-                })
+                tool_calls.append(
+                    {
+                        'tool_use_id': tool_call.id,
+                        'tool_name': tool_call.function.name,
+                        'tool_input': json.loads(tool_call.function.arguments),
+                    }
+                )
 
         return tool_calls
 
@@ -151,11 +128,7 @@ class GroqToolAdapter(ToolAdapter):
         """Format tool results for Groq."""
         messages = []
         for result in results:
-            messages.append({
-                'tool_call_id': result.tool_use_id,
-                'role': 'tool',
-                'content': result.content
-            })
+            messages.append({'tool_call_id': result.tool_use_id, 'role': 'tool', 'content': result.content})
         return messages
 
     def supports_tools(self) -> bool:

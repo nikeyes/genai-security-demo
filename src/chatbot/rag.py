@@ -32,13 +32,13 @@ class Rag:
         llm = Bedrock(
             region_name='eu-central-1',
             model=bedrock_model_id,
-            profile_name='data-dev',
+            profile_name='ideas2impact-dev',
         )
 
         embed_model = BedrockEmbedding(
             region_name='eu-central-1',
             model_name='cohere.embed-multilingual-v3',
-            profile_name='data-dev',
+            profile_name='ideas2impact-dev',
         )
 
         # global settings

@@ -6,6 +6,7 @@ from dataclasses import dataclass
 @dataclass
 class ToolSpec:
     """Standard tool specification that works across all providers."""
+
     name: str
     description: str
     parameters: Dict[str, Any]
@@ -19,6 +20,7 @@ class ToolSpec:
 @dataclass
 class ToolResult:
     """Result from a tool execution."""
+
     tool_use_id: str
     content: str
     success: bool = True
@@ -38,7 +40,7 @@ class ToolHandler:
     def execute_tool(self, tool_name: str, tool_input: Dict[str, Any]) -> Any:
         """Execute a tool by name with given input."""
         if tool_name not in self._tools:
-            raise ValueError(f"Unknown tool: {tool_name}")
+            raise ValueError(f'Unknown tool: {tool_name}')
 
         return self._tools[tool_name](tool_input)
 

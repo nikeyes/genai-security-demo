@@ -52,21 +52,10 @@ class GroqProvider(BaseProvider):
             tool_results = []
             for tool_call in tool_calls:
                 try:
-                    result_content = tool_handler.execute_tool(
-                        tool_call['tool_name'], tool_call['tool_input']
-                    )
-                    tool_result = ToolResult(
-                        tool_use_id=tool_call['tool_use_id'],
-                        content=str(result_content),
-                        success=True
-                    )
+                    result_content = tool_handler.execute_tool(tool_call['tool_name'], tool_call['tool_input'])
+                    tool_result = ToolResult(tool_use_id=tool_call['tool_use_id'], content=str(result_content), success=True)
                 except Exception as e:
-                    tool_result = ToolResult(
-                        tool_use_id=tool_call['tool_use_id'],
-                        content=f"Error: {str(e)}",
-                        success=False,
-                        error=str(e)
-                    )
+                    tool_result = ToolResult(tool_use_id=tool_call['tool_use_id'], content=f'Error: {str(e)}', success=False, error=str(e))
                 tool_results.append(tool_result)
 
             # Add assistant message and tool results

@@ -1,21 +1,23 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
+
 from .logger_config import setup_logger
-from .tool_system import ToolSpec, ToolHandler, ToolAdapter
+from .tool_system import ToolAdapter, ToolHandler, ToolSpec
 
 
 class BaseProvider(ABC):
     """Base class for all LLM providers. Eliminates code duplication."""
 
     # Common constants
-    STOP_SEQUENCES = ['\n\nHuman:', '\n\nAssistant', '</function_calls>']
-    DEFAULT_MAX_TOKENS = 1024
+    STOP_SEQUENCES = []
+    DEFAULT_MAX_TOKENS = 2048
     DEFAULT_TEMPERATURE = 0.5
     DEFAULT_TOP_P = 1.0
 
     def __init__(self, name: str, model_id: str, debug: bool = False, tools: List[ToolSpec] = None):
         self.name = name
         self.model_id = model_id
+        self.debug = debug
         self.logger = setup_logger(__name__, debug)
         self.tools = tools or []
         self.tool_adapter = self._create_tool_adapter()

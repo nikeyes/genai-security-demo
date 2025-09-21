@@ -8,15 +8,16 @@ from ui.prompt_injection_demo_ui import leak_demo
 from ui.input_guardrail_ui import input_guardrail_demo
 from ui.output_guardrail_ui import output_guardrail_demo
 from ui.rag_ui import rag_demo
+from ui.vulnerable_bot_ui import vulnerable_bot_demo
 
 config = LLMConfig()
 
 if config.LLAMA_SECURITY_FAMILY:
-    demos = [basic_demo, rag_demo, leak_demo, input_guardrail_demo, output_guardrail_demo]
-    demo_names = ['Direct', 'RAG', 'Prompt Leak', 'Input Guardrails', 'Output Guardrails']
+    demos = [basic_demo, rag_demo, leak_demo, vulnerable_bot_demo, input_guardrail_demo, output_guardrail_demo]
+    demo_names = ['Direct', 'RAG', 'Prompt Leak', 'Command Injection', 'Input Guardrails', 'Output Guardrails']
 else:
-    demos = [basic_demo, rag_demo, leak_demo]
-    demo_names = ['Direct', 'RAG', 'Prompt Leak']
+    demos = [basic_demo, rag_demo, leak_demo, vulnerable_bot_demo]
+    demo_names = ['Direct', 'RAG', 'Prompt Leak', 'Command Injection']
 
 demo = gr.TabbedInterface(demos, demo_names)
 demo.launch(server_port=7860, share=False)

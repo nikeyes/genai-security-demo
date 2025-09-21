@@ -64,9 +64,7 @@ class TestBedrockConverseProviderTools(unittest.TestCase):
         }
 
         # Initialize provider with tools
-        self.provider = BedrockConverseProvider(
-            model_id='anthropic.claude-3-haiku-20240307-v1:0', debug=True, tools=[calculator_tool]
-        )
+        self.provider = BedrockConverseProvider(model_id='anthropic.claude-3-haiku-20240307-v1:0', debug=True, tools=[calculator_tool])
         self.tool_handler = create_tool_handler()
 
     def test_tool_usage_addition(self):
@@ -141,13 +139,11 @@ class TestBedrockConverseProviderTools(unittest.TestCase):
         result_add = self.tool_handler.execute_tool('calculator', {'operation': 'add', 'a': 5, 'b': 3})
         self.assertEqual(result_add, 9)  # 5 + 3 + 1 = 9
 
-        result_multiply = self.tool_handler.execute_tool('calculator',
-                                                        {'operation': 'strange_multiply', 'a': 4, 'b': 2})
+        result_multiply = self.tool_handler.execute_tool('calculator', {'operation': 'strange_multiply', 'a': 4, 'b': 2})
         self.assertEqual(result_multiply, 16)  # 4 * 2 * 2 = 16
 
         # Test unknown operation
-        result_unknown_op = self.tool_handler.execute_tool('calculator',
-                                                          {'operation': 'subtract', 'a': 5, 'b': 3})
+        result_unknown_op = self.tool_handler.execute_tool('calculator', {'operation': 'subtract', 'a': 5, 'b': 3})
         self.assertEqual(result_unknown_op, 'Unknown operation: subtract')
 
         # Test unknown tool should raise exception
