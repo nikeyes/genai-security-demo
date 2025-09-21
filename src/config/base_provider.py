@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
+from typing import List, Optional
 from .logger_config import setup_logger
+from .tool_system import ToolSpec, ToolHandler, ToolAdapter
 
 
 class BaseProvider(ABC):
@@ -11,10 +13,12 @@ class BaseProvider(ABC):
     DEFAULT_TEMPERATURE = 0.5
     DEFAULT_TOP_P = 1.0
 
-    def __init__(self, name: str, model_id: str, debug: bool = False):
+    def __init__(self, name: str, model_id: str, debug: bool = False, tools: List[ToolSpec] = None):
         self.name = name
         self.model_id = model_id
         self.logger = setup_logger(__name__, debug)
+        self.tools = tools or []
+        self.tool_adapter = self._create_tool_adapter()
         self.logger.debug('%s initialized', self.__class__.__name__)
 
     @staticmethod
@@ -23,9 +27,22 @@ class BaseProvider(ABC):
         return s.strip() == ''
 
     @abstractmethod
-    def invoke(self, system_prompt: str, user_prompt: str):
+    def invoke(self, system_prompt: str, user_prompt: str, tool_handler: Optional[ToolHandler] = None):
         """Invoke the provider with system and user prompts."""
         pass
+
+    @abstractmethod
+    def _create_tool_adapter(self) -> ToolAdapter:
+        """Create the appropriate tool adapter for this provider."""
+        pass
+
+    def has_tools(self) -> bool:
+        """Check if this provider has tools configured."""
+        return len(self.tools) > 0
+
+    def supports_tools(self) -> bool:
+        """Check if this provider supports tools."""
+        return self.tool_adapter.supports_tools() if self.tool_adapter else False
 
     def trace_invocation_info(self, user_prompt, model_id, messages_or_body):
         """Log debug information before the API call."""

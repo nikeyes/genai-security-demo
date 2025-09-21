@@ -1,6 +1,7 @@
 import anthropic
 from .base_provider import BaseProvider
 from .token_usage import TokenUsage
+from .tool_adapters import NoOpToolAdapter
 
 
 class AnthropicProvider(BaseProvider):
@@ -8,7 +9,11 @@ class AnthropicProvider(BaseProvider):
         super().__init__('Anthropic-Claude', model_id, debug)
         self.client = anthropic.Anthropic()
 
-    def invoke(self, system_prompt: str, user_prompt: str):
+    def _create_tool_adapter(self) -> NoOpToolAdapter:
+        """Create NoOp tool adapter since Anthropic provider doesn't support tools yet."""
+        return NoOpToolAdapter()
+
+    def invoke(self, system_prompt: str, user_prompt: str, tool_handler=None):
         """Invoke Anthropic model with system and user prompts."""
         if self.is_empty(user_prompt):
             return ' '

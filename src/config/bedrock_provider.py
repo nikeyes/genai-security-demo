@@ -2,6 +2,7 @@ import json
 import boto3
 from .base_provider import BaseProvider
 from .token_usage import TokenUsage
+from .tool_adapters import NoOpToolAdapter
 
 
 class BedrockClaudeProvider(BaseProvider):
@@ -9,7 +10,11 @@ class BedrockClaudeProvider(BaseProvider):
         super().__init__('Bedrock-Claude', model_id, debug)
         self.client = boto3.client(service_name='bedrock-runtime', region_name='eu-central-1')
 
-    def invoke(self, system_prompt: str, user_prompt: str):
+    def _create_tool_adapter(self) -> NoOpToolAdapter:
+        """Create NoOp tool adapter since this Bedrock provider doesn't support tools."""
+        return NoOpToolAdapter()
+
+    def invoke(self, system_prompt: str, user_prompt: str, tool_handler=None):
         if self.is_empty(user_prompt):
             return ' '
 

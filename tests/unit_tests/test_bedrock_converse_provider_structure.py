@@ -21,7 +21,7 @@ class TestBedrockConverseProviderStructure(unittest.TestCase):
                 'toolSpec': {
                     'name': 'test_tool',
                     'description': 'A test tool',
-                    'inputSchema': {'json': {'type': 'object'}}
+                    'inputSchema': {'json': {'type': 'object', 'properties': {}, 'required': []}}
                 }
             }
         ]
@@ -29,7 +29,7 @@ class TestBedrockConverseProviderStructure(unittest.TestCase):
         with patch('boto3.client'):
             provider = BedrockConverseProvider('test-model', tools=tools)
             self.assertEqual(len(provider.tools), 1)
-            self.assertEqual(provider.tools[0]['toolSpec']['name'], 'test_tool')
+            self.assertEqual(provider.tools[0].name, 'test_tool')
 
     def test_initialization_with_empty_tools_list(self):
         """Test provider initialization with empty tools list."""
@@ -63,13 +63,14 @@ class TestBedrockConverseProviderStructure(unittest.TestCase):
         with patch('boto3.client'):
             provider = BedrockConverseProvider('test-model', tools=[calculator_tool])
 
-            # Verify tool structure
-            tool = provider.tools[0]
-            self.assertIn('toolSpec', tool)
-            self.assertIn('name', tool['toolSpec'])
-            self.assertIn('description', tool['toolSpec'])
-            self.assertIn('inputSchema', tool['toolSpec'])
-            self.assertEqual(tool['toolSpec']['name'], 'calculator')
+            # Verify tool structure (now ToolSpec objects)
+            tool_spec = provider.tools[0]
+            self.assertEqual(tool_spec.name, 'calculator')
+            self.assertEqual(tool_spec.description, 'Perform basic mathematical calculations')
+            self.assertIn('operation', tool_spec.parameters)
+            self.assertIn('a', tool_spec.parameters)
+            self.assertIn('b', tool_spec.parameters)
+            self.assertEqual(tool_spec.required, ['operation', 'a', 'b'])
 
     @patch('boto3.client')
     def test_invoke_method_signature(self, mock_boto3):
