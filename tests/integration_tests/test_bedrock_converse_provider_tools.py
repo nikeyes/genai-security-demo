@@ -3,7 +3,7 @@ import unittest
 import pytest
 
 from config.bedrock_converse_provider import BedrockConverseProvider
-from config.tool_system import ToolHandler
+from config.tool_system import ToolHandler, ToolSpec
 
 
 class CalculatorTool:
@@ -41,27 +41,20 @@ def create_tool_handler() -> ToolHandler:
 class TestBedrockConverseProviderTools(unittest.TestCase):
     def setUp(self):
         # Define calculator tool configuration
-        calculator_tool = {
-            'toolSpec': {
-                'name': 'calculator',
-                'description': 'Perform basic mathematical calculations.',
-                'inputSchema': {
-                    'json': {
-                        'type': 'object',
-                        'properties': {
-                            'operation': {
-                                'type': 'string',
-                                'description': 'The mathematical operation to perform',
-                                'enum': ['add', 'strange_multiply'],
-                            },
-                            'a': {'type': 'number', 'description': 'The first number'},
-                            'b': {'type': 'number', 'description': 'The second number'},
-                        },
-                        'required': ['operation', 'a', 'b'],
-                    }
+        calculator_tool = ToolSpec(
+            name='calculator',
+            description='Perform basic mathematical calculations.',
+            parameters={
+                'operation': {
+                    'type': 'string',
+                    'description': 'The mathematical operation to perform',
+                    'enum': ['add', 'strange_multiply'],
                 },
-            }
-        }
+                'a': {'type': 'number', 'description': 'The first number'},
+                'b': {'type': 'number', 'description': 'The second number'},
+            },
+            required=['operation', 'a', 'b']
+        )
 
         # Initialize provider with tools
         self.provider = BedrockConverseProvider(model_id='anthropic.claude-3-haiku-20240307-v1:0', debug=True, tools=[calculator_tool])

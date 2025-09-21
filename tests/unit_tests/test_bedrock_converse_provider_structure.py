@@ -3,6 +3,7 @@
 import unittest
 from unittest.mock import Mock, patch
 from src.config.bedrock_converse_provider import BedrockConverseProvider
+from src.config.tool_system import ToolSpec
 
 
 class TestBedrockConverseProviderStructure(unittest.TestCase):
@@ -18,13 +19,12 @@ class TestBedrockConverseProviderStructure(unittest.TestCase):
     def test_initialization_with_tools(self):
         """Test provider initialization with tools."""
         tools = [
-            {
-                'toolSpec': {
-                    'name': 'test_tool',
-                    'description': 'A test tool',
-                    'inputSchema': {'json': {'type': 'object', 'properties': {}, 'required': []}},
-                }
-            }
+            ToolSpec(
+                name='test_tool',
+                description='A test tool',
+                parameters={},
+                required=[]
+            )
         ]
 
         with patch('boto3.client'):
@@ -40,23 +40,16 @@ class TestBedrockConverseProviderStructure(unittest.TestCase):
 
     def test_tool_config_structure(self):
         """Test that tool configuration follows AWS Bedrock format."""
-        calculator_tool = {
-            'toolSpec': {
-                'name': 'calculator',
-                'description': 'Perform basic mathematical calculations',
-                'inputSchema': {
-                    'json': {
-                        'type': 'object',
-                        'properties': {
-                            'operation': {'type': 'string', 'enum': ['add', 'multiply']},
-                            'a': {'type': 'number'},
-                            'b': {'type': 'number'},
-                        },
-                        'required': ['operation', 'a', 'b'],
-                    }
-                },
-            }
-        }
+        calculator_tool = ToolSpec(
+            name='calculator',
+            description='Perform basic mathematical calculations',
+            parameters={
+                'operation': {'type': 'string', 'enum': ['add', 'multiply']},
+                'a': {'type': 'number'},
+                'b': {'type': 'number'},
+            },
+            required=['operation', 'a', 'b']
+        )
 
         with patch('boto3.client'):
             provider = BedrockConverseProvider('test-model', tools=[calculator_tool])

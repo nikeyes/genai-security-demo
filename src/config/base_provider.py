@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List, Optional
 
 from .logger_config import setup_logger
-from .tool_system import ToolAdapter, ToolHandler, ToolSpec
+from .tool_system import ToolAdapter, ToolHandler, ToolSpec, ToolResult
 
 
 class BaseProvider(ABC):
@@ -68,6 +68,39 @@ class BaseProvider(ABC):
         self.logger.debug('- Output tokens: %s', output_tokens)
         self.logger.debug('- Completion text: %s', response_text)
         self.logger.debug('Invocation completed.')
+
+    def _execute_tools(self, response, tool_handler, messages, params):
+        """Common tool execution logic for all providers."""
+        tool_calls = self.tool_adapter.extract_tool_calls(response)
+        if not tool_calls or not tool_handler:
+            return response
+
+        tool_results = []
+        for tool_call in tool_calls:
+            try:
+                result_content = tool_handler.execute_tool(tool_call['tool_name'], tool_call['tool_input'])
+                tool_result = ToolResult(tool_use_id=tool_call['tool_use_id'], content=str(result_content), success=True)
+            except Exception as e:
+                tool_result = ToolResult(tool_use_id=tool_call['tool_use_id'], content=f'Error: {str(e)}', success=False, error=str(e))
+            tool_results.append(tool_result)
+
+        # Format and add tool results to conversation
+        formatted_results = self.tool_adapter.format_tool_results(tool_results)
+        self._add_tool_conversation(messages, response, formatted_results)
+
+        # Make follow-up call
+        params['messages'] = messages
+        return self._make_tool_followup_call(params)
+
+    @abstractmethod
+    def _add_tool_conversation(self, messages, response, formatted_results):
+        """Add tool conversation to messages (provider-specific format)."""
+        pass
+
+    @abstractmethod
+    def _make_tool_followup_call(self, params):
+        """Make follow-up call with tool results (provider-specific)."""
+        pass
 
     @abstractmethod
     def _extract_token_usage(self, response):

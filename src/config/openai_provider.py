@@ -2,7 +2,7 @@ from openai import OpenAI
 from .base_provider import BaseProvider
 from .token_usage import TokenUsage
 from .tool_system import ToolResult
-from .tool_adapters import OpenAIToolAdapter
+from .tool_adapters import OpenAICompatibleToolAdapter
 
 
 class OpenAIProvider(BaseProvider):
@@ -10,9 +10,9 @@ class OpenAIProvider(BaseProvider):
         super().__init__('GPT4o-OpenAI', model_id, debug, tools)
         self.client = OpenAI()
 
-    def _create_tool_adapter(self) -> OpenAIToolAdapter:
-        """Create OpenAI tool adapter."""
-        return OpenAIToolAdapter()
+    def _create_tool_adapter(self) -> OpenAICompatibleToolAdapter:
+        """Create OpenAI-compatible tool adapter."""
+        return OpenAICompatibleToolAdapter()
 
     def invoke(self, system_prompt: str, user_prompt: str, tool_handler=None):
         """Invoke OpenAI model with system and user prompts."""
@@ -43,32 +43,22 @@ class OpenAIProvider(BaseProvider):
         response = self.client.chat.completions.create(**params)
 
         # Handle tool calls if present
-        tool_calls = self.tool_adapter.extract_tool_calls(response)
-        if tool_calls and tool_handler:
-            # Process tool calls
-            tool_results = []
-            for tool_call in tool_calls:
-                try:
-                    result_content = tool_handler.execute_tool(tool_call['tool_name'], tool_call['tool_input'])
-                    tool_result = ToolResult(tool_use_id=tool_call['tool_use_id'], content=str(result_content), success=True)
-                except Exception as e:
-                    tool_result = ToolResult(tool_use_id=tool_call['tool_use_id'], content=f'Error: {str(e)}', success=False, error=str(e))
-                tool_results.append(tool_result)
-
-            # Add assistant message and tool results
-            messages.append(response.choices[0].message.model_dump())
-            tool_messages = self.tool_adapter.format_tool_results(tool_results)
-            messages.extend(tool_messages)
-
-            # Make another call with tool results
-            params['messages'] = messages
-            response = self.client.chat.completions.create(**params)
+        response = self._execute_tools(response, tool_handler, messages, params)
 
         completion_text = response.choices[0].message.content
         self.trace_invocation_result_basic(completion_text, response.usage)
 
         usage = self._extract_token_usage(response)
         return completion_text, usage
+
+    def _add_tool_conversation(self, messages, response, formatted_results):
+        """Add tool conversation to messages (OpenAI format)."""
+        messages.append(response.choices[0].message.model_dump())
+        messages.extend(formatted_results)
+
+    def _make_tool_followup_call(self, params):
+        """Make follow-up call with tool results (OpenAI format)."""
+        return self.client.chat.completions.create(**params)
 
     def _extract_token_usage(self, response):
         return TokenUsage(input_tokens=response.usage.prompt_tokens, output_tokens=response.usage.completion_tokens)

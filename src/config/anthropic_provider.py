@@ -40,5 +40,13 @@ class AnthropicProvider(BaseProvider):
         usage = self._extract_token_usage(response)
         return completion_text, usage
 
+    def _add_tool_conversation(self, messages, response, formatted_results):
+        """No-op implementation since this provider doesn't support tools."""
+        pass
+
+    def _make_tool_followup_call(self, params):
+        """No-op implementation since this provider doesn't support tools."""
+        return None
+
     def _extract_token_usage(self, response):
         return TokenUsage(input_tokens=response.usage.input_tokens, output_tokens=response.usage.output_tokens)
