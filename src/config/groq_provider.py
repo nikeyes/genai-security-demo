@@ -56,7 +56,28 @@ class GroqProvider(BaseProvider):
 
     def _add_tool_conversation(self, messages, response, formatted_results):
         """Add tool conversation to messages (Groq format)."""
-        messages.append(response.choices[0].message.model_dump())
+        # Groq doesn't support 'executed_tools' property, so we manually construct the message
+        message = response.choices[0].message
+        assistant_message = {
+            'role': 'assistant',
+            'content': message.content,
+        }
+
+        # Add tool_calls if present
+        if hasattr(message, 'tool_calls') and message.tool_calls:
+            assistant_message['tool_calls'] = [
+                {
+                    'id': tool_call.id,
+                    'type': tool_call.type,
+                    'function': {
+                        'name': tool_call.function.name,
+                        'arguments': tool_call.function.arguments
+                    }
+                }
+                for tool_call in message.tool_calls
+            ]
+
+        messages.append(assistant_message)
         messages.extend(formatted_results)
 
     def _make_tool_followup_call(self, params):
