@@ -15,7 +15,10 @@ class LLMConfig:
     GROQ_MODEL_ID = 'llama-3.3-70b-versatile'
     OPENAI_MODEL_ID = 'gpt-4o-mini'
     BEDROCK_MODEL_ID = 'anthropic.claude-3-haiku-20240307-v1:0'
-    BEDROCK_CONVERSE_MODEL_ID = 'eu.amazon.nova-lite-v1:0'  # 'eu.anthropic.claude-sonnet-4-20250514-v1:0'  # 'anthropic.claude-3-haiku-20240307-v1:0'  # 'eu.anthropic.claude-sonnet-4-20250514-v1:0'
+    BEDROCK_CONVERSE_MODEL_ID = 'anthropic.claude-3-haiku-20240307-v1:0'
+    BEDROCK_CONVERSE_NOVA_LITE_ID = 'eu.amazon.nova-lite-v1:0'
+    # BEDROCK_CONVERSE_MODEL_ID = 'eu.anthropic.claude-sonnet-4-20250514-v1:0'
+
     ANTHROPIC_MODEL_ID = 'claude-3-haiku-20240307'
 
     # Security configuration (delegated to SecurityConfig)
@@ -30,6 +33,7 @@ class LLMConfig:
         'openai': [OpenAIProvider, OPENAI_MODEL_ID],
         'bedrock': [BedrockClaudeProvider, BEDROCK_MODEL_ID],
         'bedrock_converse': [BedrockConverseProvider, BEDROCK_CONVERSE_MODEL_ID],
+        'bedrock_nova_lite': [BedrockConverseProvider, BEDROCK_CONVERSE_NOVA_LITE_ID],
         'anthropic': [AnthropicProvider, ANTHROPIC_MODEL_ID],
     }
 
@@ -72,6 +76,9 @@ class LLMConfig:
     def get_bedrock_converse_llm(self):
         return self.providers['bedrock_converse']
 
+    def get_bedrock_converse_nova_lite(self):
+        return self.providers['bedrock_nova_lite']
+
     def get_default_unprotected_llm(self):
         return self.default_unprotected_llm
 
@@ -102,4 +109,5 @@ class LLMConfig:
     def create_vulnerable_bot_setup(self):
         from chatbot.vulnerable_bot import VulnerableBot
 
-        return VulnerableBot(self.get_default_unprotected_llm())
+        # return VulnerableBot(self.get_default_unprotected_llm())
+        return VulnerableBot(self.get_bedrock_converse_nova_lite())

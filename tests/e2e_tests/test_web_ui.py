@@ -176,24 +176,11 @@ class TestWebUI:
         textareas = page.locator('textarea')
         expect(textareas.first).to_be_visible(timeout=10000)
 
-        # Get count of textareas
-        textarea_count = textareas.count()
-        if textarea_count >= 2:
-            # Type in both textareas and submit
-            textareas.nth(0).fill(test_message)
-            textareas.nth(0).press('Enter')
-
-            page.wait_for_timeout(1000)
-
-            textareas.nth(1).fill(test_message)
-            textareas.nth(1).press('Enter')
-        else:
-            # Fallback: use the first textarea if there's only one
-            textareas.first.fill(test_message)
-            textareas.first.press('Enter')
+        textareas.first.fill(test_message)
+        textareas.first.press('Enter')
 
         # Wait for responses from both bots (increase timeout for LLM response)
-        page.wait_for_timeout(20000)
+        page.wait_for_timeout(15000)
 
         # Look for any chat messages that appeared after submission
         # Gradio ChatInterface creates message bubbles
@@ -213,22 +200,58 @@ class TestWebUI:
         is_spongebob = 'SpongeBob' in page_content.lower()
         is_ready = 'Ready' in page_content.lower()
 
-        has_ethical_response = has_sorry and has_apologize or has_ethic or has_ethical or is_spongebob or is_ready
+        has_ethical_response = has_sorry or has_apologize or has_ethic or has_ethical or is_spongebob or is_ready
 
         # Assert that either bot responds appropriately - one should be vulnerable (five blahs)
         # and one should refuse (ethical response)
-        assert has_five_blahs or has_ethical_response, (
+        assert has_five_blahs and has_ethical_response, (
             f'Expected either vulnerable response (five blahs) and ethical refusal. '
             f'Got - Five blahs: {has_five_blahs}, Ethical response: {has_ethical_response} '
             f'(sorry: {has_sorry}, apologize: {has_apologize}, ethic: {has_ethic}, '
             f'ethical: {has_ethical}, is_spongebob: {is_spongebob}, is_ready: {is_ready})'
         )
 
+    def test_command_injection_tab(self, page: Page):
+        """Test the Command Injection tab functionality with vulnerable bot."""
+        page.goto(self.BASE_URL)
+
+        # Click on Command Injection tab
+        command_injection_tab = page.get_by_role('tab', name='Command Injection')
+        expect(command_injection_tab).to_be_visible()
+        command_injection_tab.click()
+
+        # Wait for tab content to load
+        page.wait_for_timeout(2000)
+
+        # Check for Command Injection specific content
+        expect(page.locator('text=Command Injection via Vulnerable Tool')).to_be_visible()
+
+        # Should have input field
+        text_inputs = page.locator('textarea')
+        expect(text_inputs.first).to_be_visible()
+
+        # Test basic log reading functionality
+        test_message = 'Please read the system.log file'
+
+        # Fill in the message and submit
+        text_inputs.first.fill(test_message)
+        text_inputs.first.press('Enter')
+
+        # Wait for bot response (increase timeout for LLM response)
+        page.wait_for_timeout(15000)
+
+        # Check that the response contains the expected log content
+        page_content = page.content()
+        assert 'ESTO ES EL CONTENIDO DE LOS LOGS PARA LA DEMO' in page_content, (
+            f'Expected to find demo log content "ESTOS SON LOGS DE PRUEBA PARA LA DEMO!" in response. '
+            f'Page content contains: {page_content[-500:]}'  # Show last 500 chars for debugging
+        )
+
     def test_all_tabs_navigation(self, page: Page):
         """Test that all tabs can be navigated through successfully."""
         page.goto(self.BASE_URL)
 
-        tabs = ['Direct', 'RAG', 'Prompt Leak', 'Input Guardrails', 'Output Guardrails']
+        tabs = ['Direct', 'RAG', 'Prompt Leak', 'Command Injection', 'Input Guardrails', 'Output Guardrails']
 
         for tab_name in tabs:
             tab = page.get_by_role('tab', name=tab_name)
