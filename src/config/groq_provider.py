@@ -1,7 +1,6 @@
 from groq import Groq
 from .base_provider import BaseProvider
 from .token_usage import TokenUsage
-from .tool_system import ToolResult
 from .tool_adapters import OpenAICompatibleToolAdapter
 
 
@@ -69,10 +68,7 @@ class GroqProvider(BaseProvider):
                 {
                     'id': tool_call.id,
                     'type': tool_call.type,
-                    'function': {
-                        'name': tool_call.function.name,
-                        'arguments': tool_call.function.arguments
-                    }
+                    'function': {'name': tool_call.function.name, 'arguments': tool_call.function.arguments},
                 }
                 for tool_call in message.tool_calls
             ]

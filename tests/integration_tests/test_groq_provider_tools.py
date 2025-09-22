@@ -22,7 +22,7 @@ class UserInfoTool:
         department = departments[user_hash % len(departments)]
         score = 60 + (user_hash % 40)  # Score between 60-100
 
-        return f"User {user_id}: {name}, {department} dept, Score: {score}/100"
+        return f'User {user_id}: {name}, {department} dept, Score: {score}/100'
 
 
 def create_tool_handler() -> ToolHandler:
@@ -60,7 +60,7 @@ class TestGroqProviderTools(unittest.TestCase):
                 },
                 'user_id': {'type': 'string', 'description': 'The user ID to look up'},
             },
-            required=['action', 'user_id']
+            required=['action', 'user_id'],
         )
 
         # Initialize provider with tools

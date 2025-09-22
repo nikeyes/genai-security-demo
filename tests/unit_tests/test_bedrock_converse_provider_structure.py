@@ -18,14 +18,7 @@ class TestBedrockConverseProviderStructure(unittest.TestCase):
 
     def test_initialization_with_tools(self):
         """Test provider initialization with tools."""
-        tools = [
-            ToolSpec(
-                name='test_tool',
-                description='A test tool',
-                parameters={},
-                required=[]
-            )
-        ]
+        tools = [ToolSpec(name='test_tool', description='A test tool', parameters={}, required=[])]
 
         with patch('boto3.client'):
             provider = BedrockConverseProvider('test-model', tools=tools)
@@ -48,7 +41,7 @@ class TestBedrockConverseProviderStructure(unittest.TestCase):
                 'a': {'type': 'number'},
                 'b': {'type': 'number'},
             },
-            required=['operation', 'a', 'b']
+            required=['operation', 'a', 'b'],
         )
 
         with patch('boto3.client'):

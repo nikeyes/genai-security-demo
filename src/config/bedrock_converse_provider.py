@@ -19,7 +19,6 @@ class BedrockConverseProvider(BaseProvider):
         """Create Bedrock tool adapter."""
         return BedrockToolAdapter()
 
-
     def invoke(self, system_prompt: str, user_prompt: str, tool_handler=None, messages=None):
         if self.is_empty(user_prompt) and not messages:
             return ' '
@@ -78,8 +77,7 @@ class BedrockConverseProvider(BaseProvider):
 
         self.trace_invocation_info(None, self.model_id, {'messages': messages, 'system': system_messages, 'tools': tool_config})
 
-        self.logger.debug('Conversation analysis: has_tool_results=%s, has_pending_tools=%s',
-                          has_tool_results, has_pending_tools)
+        self.logger.debug('Conversation analysis: has_tool_results=%s, has_pending_tools=%s', has_tool_results, has_pending_tools)
 
         # Prepare converse parameters
         converse_params = {
@@ -200,7 +198,6 @@ class BedrockConverseProvider(BaseProvider):
             if 'toolUse' in block:
                 return True
         return False
-
 
     def _add_tool_conversation(self, messages, response, formatted_results):
         """Add tool conversation to messages (Bedrock-specific format)."""

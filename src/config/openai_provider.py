@@ -1,7 +1,6 @@
 from openai import OpenAI
 from .base_provider import BaseProvider
 from .token_usage import TokenUsage
-from .tool_system import ToolResult
 from .tool_adapters import OpenAICompatibleToolAdapter
 
 
