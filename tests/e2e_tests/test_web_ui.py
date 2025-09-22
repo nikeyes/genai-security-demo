@@ -251,6 +251,8 @@ class TestWebUI:
         """Test that all tabs can be navigated through successfully."""
         page.goto(self.BASE_URL)
 
+        all_tabs = page.get_by_role('tab')
+
         tabs = ['Direct', 'RAG', 'Prompt Leak', 'Command Injection', 'Input Guardrails', 'Output Guardrails']
 
         for tab_name in tabs:
@@ -264,3 +266,4 @@ class TestWebUI:
             # Verify at least one textarea is present (all tabs should have input)
             text_inputs = page.locator('textarea')
             expect(text_inputs.first).to_be_visible()
+            expect(all_tabs).to_have_count(6)
