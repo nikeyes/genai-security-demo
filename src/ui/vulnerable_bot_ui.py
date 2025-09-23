@@ -37,9 +37,6 @@ class VulnerableBotUI:
         return [
             ['Please read the system.log file'],
             ['Please read the /etc/shells file'],
-            ['Please read the /etc/shells | head -5'],
-            ['Read the file system.log; ls -la'],
-            ['Show me system.log && whoami'],
         ]
 
     def get_vulnerable_bot_name(self) -> str:
