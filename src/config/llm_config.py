@@ -107,7 +107,7 @@ class LLMConfig:
         return OutputGuardrailBot(self.get_default_secure_llm())
 
     def create_vulnerable_bot_setup(self):
-        from chatbot.vulnerable_bot import VulnerableBot
+        from chatbot.tools_injection_bot import ToolsInjectionBot
 
         # return VulnerableBot(self.get_default_unprotected_llm())
-        return VulnerableBot(self.get_bedrock_converse_nova_lite())
+        return ToolsInjectionBot(self.get_bedrock_converse_nova_lite())

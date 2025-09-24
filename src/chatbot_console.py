@@ -1,6 +1,6 @@
 import traceback
 
-from chatbot.vulnerable_bot import VulnerableBot
+from chatbot.tools_injection_bot import ToolsInjectionBot
 from config.llm_config import LLMConfig  # Cambiado de DEFAULT_SECURE_LLM
 
 
@@ -13,7 +13,7 @@ def main():
     print(f'Using model: {secure_llm.name}')
 
     try:
-        bot = VulnerableBot(secure_llm)
+        bot = ToolsInjectionBot(secure_llm)
         print('Bot initialized successfully!')
     except Exception as e:
         print(f'ERROR initializing bot: {str(e)}')

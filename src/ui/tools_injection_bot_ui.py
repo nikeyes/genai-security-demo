@@ -11,7 +11,7 @@ from config.llm_config import LLMConfig
 from ui.common import slow_echo
 
 
-class VulnerableBotUI:
+class ToolsInjectionBotUI:
     """
     UI for demonstrating command injection vulnerabilities in AI tools.
 
@@ -77,5 +77,5 @@ class VulnerableBotUI:
 
 
 # Create the demo instance for export
-_demo_ui = VulnerableBotUI(debug=False)
+_demo_ui = ToolsInjectionBotUI(debug=False)
 vulnerable_bot_demo = _demo_ui.create_gradio_interface()

@@ -242,8 +242,8 @@ class TestWebUI:
 
         # Check that the response contains the expected log content
         page_content = page.content()
-        assert 'ESTO ES EL CONTENIDO DE LOS LOGS PARA LA DEMO' in page_content, (
-            f'Expected to find demo log content "ESTOS SON LOGS DE PRUEBA PARA LA DEMO!" in response. '
+        assert '2024-09-24 08:15:23 INFO [main] Application starting up - GenAI Security Demo v1.2.3' in page_content, (
+            f'Expected to find demo log content "2024-09-24 08:15:23 INFO [main] Application starting up - GenAI Security Demo v1.2.3 '
             f'Page content contains: {page_content[-500:]}'  # Show last 500 chars for debugging
         )
 

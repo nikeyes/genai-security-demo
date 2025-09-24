@@ -8,7 +8,7 @@ from ui.prompt_injection_demo_ui import leak_demo
 from ui.input_guardrail_ui import input_guardrail_demo
 from ui.output_guardrail_ui import output_guardrail_demo
 from ui.rag_ui import rag_demo
-from ui.vulnerable_bot_ui import vulnerable_bot_demo
+from ui.tools_injection_bot_ui import vulnerable_bot_demo
 
 config = LLMConfig()
 
