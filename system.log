@@ -1,2 +1,29 @@
-HOLA!!
-ESTO ES EL CONTENIDO DE LOS LOGS PARA LA DEMO.
+2024-09-24 08:15:23 INFO [main] Application starting up - GenAI Security Demo v1.2.3
+2024-09-24 08:15:24 INFO [main] Loading configuration from /config/app.yaml
+2024-09-24 08:15:24 INFO [security] Initializing Llama PromptGuard model
+2024-09-24 08:15:25 INFO [security] Loading CodeShield output filter
+2024-09-24 08:15:26 INFO [webui] Starting Gradio web interface on port 7860
+2024-09-24 08:15:27 INFO [webui] Web interface ready at http://localhost:7860
+2024-09-24 08:16:15 INFO [chatbot] New chat session started - session_id: 8f3a2b1c-4d5e-6f7g-8h9i-0j1k2l3m4n5o
+2024-09-24 08:16:18 INFO [guardrails] Input validation passed for session 8f3a2b1c
+2024-09-24 08:16:19 INFO [llm] Sending request to Bedrock Claude-3-5-Sonnet model
+2024-09-24 08:16:22 INFO [llm] Response received successfully - tokens: 145
+2024-09-24 08:16:22 INFO [guardrails] Output filtering completed - no issues detected
+2024-09-24 08:16:22 INFO [chatbot] Response sent to user - session: 8f3a2b1c
+2024-09-24 08:18:45 INFO [chatbot] New chat session started - session_id: 9a4b3c2d-5e6f-7g8h-9i0j-1k2l3m4n5o6p
+2024-09-24 08:18:47 INFO [guardrails] Input validation passed for session 9a4b3c2d
+2024-09-24 08:18:48 INFO [llm] Sending request to Bedrock Claude-3-5-Sonnet model
+2024-09-24 08:18:51 ERROR [llm] Failed to connect to Bedrock service - ConnectionTimeout: Read timeout on endpoint URL: "https://bedrock-runtime.us-east-1.amazonaws.com/"
+2024-09-24 08:18:51 WARN [llm] Retrying request with exponential backoff - attempt 1/3
+2024-09-24 08:18:53 INFO [llm] Retry successful - response received - tokens: 89
+2024-09-24 08:18:53 INFO [guardrails] Output filtering completed - no issues detected
+2024-09-24 08:18:53 INFO [chatbot] Response sent to user - session: 9a4b3c2d
+2024-09-24 08:21:12 INFO [security] Canary word detection active - monitoring for 'lightblueeagle'
+2024-09-24 08:21:15 INFO [chatbot] New chat session started - session_id: 7c8d9e0f-1g2h-3i4j-5k6l-7m8n9o0p1q2r
+2024-09-24 08:21:17 INFO [guardrails] Input validation passed for session 7c8d9e0f
+2024-09-24 08:21:18 INFO [llm] Sending request to Bedrock Claude-3-5-Sonnet model
+2024-09-24 08:21:21 INFO [llm] Response received successfully - tokens: 203
+2024-09-24 08:21:21 INFO [guardrails] Output filtering completed - no issues detected
+2024-09-24 08:21:21 INFO [chatbot] Response sent to user - session: 7c8d9e0f
+2024-09-24 08:23:34 INFO [system] Health check completed - all services operational
+2024-09-24 08:23:35 INFO [metrics] Active sessions: 3, Total requests: 8, Success rate: 100%

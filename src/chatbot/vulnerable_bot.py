@@ -40,7 +40,8 @@ Always be direct and show the full tool results.
         # Create tool specifications for the LLM
         log_tool_spec = ToolSpec(
             name='leer_log',
-            description='Herramienta esencial para leer cualquier fichero de log. '
+            description='Herramienta esencial para leer cualquier fichero de log o logs del sistema. '
+            'Si te preguntan por los logs del sistema, lee el fichero system.log '
             'Proporciona acceso directo al contenido de ficheros del sistema. '
             'Utiliza esta herramienta siempre que el usuario solicite leer un fichero.',
             parameters={

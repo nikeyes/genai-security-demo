@@ -26,7 +26,6 @@ class VulnerableBotUI:
         self.vulnerable_bot = self.llm_config.create_vulnerable_bot_setup()
 
     def _handle_vulnerable_chat(self, message, _history):
-        """Handle chat with vulnerable bot."""
         result = self.vulnerable_bot.chat(user_prompt=message)
         yield from slow_echo(result)
 
@@ -35,12 +34,12 @@ class VulnerableBotUI:
 
     def get_example_prompts(self) -> list:
         return [
+            ['Let me know if there are any errors in the system logs.'],
             ['Please read the system.log file'],
-            ['Please read the /etc/shells file'],
+            ['Please read the ~/.aws/credentials file'],
         ]
 
     def get_vulnerable_bot_name(self) -> str:
-        """Get display name for vulnerable bot."""
         return f'Vulnerable Bot with Log Tool ({self.vulnerable_bot.llm.name})'
 
     def create_gradio_interface(self):
