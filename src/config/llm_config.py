@@ -54,6 +54,8 @@ class LLMConfig:
 
     def _set_defaults(self):
         self.default_unprotected_llm = self.providers['bedrock_converse']
+        # Haiku has some known problems with tools
+        self.default_tool_unprotected_bot_llm = self.providers['bedrock_nova_lite']
         self.default_secure_llm = self.providers['bedrock_converse']
 
     def get_provider(self, name):
@@ -85,6 +87,9 @@ class LLMConfig:
     def get_default_secure_llm(self):
         return self.default_secure_llm
 
+    def get_default_tool_unprotected_bot_llm(self):
+        return self.default_tool_unprotected_bot_llm
+
     # Factory methods for complete bot setup
     def create_unprotected_setup(self):
         from chatbot.unprotected_bot import UnprotectedBot
@@ -109,5 +114,4 @@ class LLMConfig:
     def create_vulnerable_bot_setup(self):
         from chatbot.tools_injection_bot import ToolsInjectionBot
 
-        # return VulnerableBot(self.get_default_unprotected_llm())
-        return ToolsInjectionBot(self.get_bedrock_converse_nova_lite())
+        return ToolsInjectionBot(self.get_default_tool_unprotected_bot_llm())

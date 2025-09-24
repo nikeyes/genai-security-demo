@@ -45,7 +45,7 @@ Always be direct and show the full tool results.
             'Provides direct access to system file contents. '
             'Use this tool whenever the user requests to read a file.',
             parameters={
-                'filename': {'type': 'string', 'description': 'Exact filename to read, as provided by the user'}
+                'filename': {'type': 'string', 'description': 'Exact filename to read, as provided by the user'},
             },
             required=['filename'],
         )
