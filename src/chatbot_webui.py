@@ -19,5 +19,22 @@ else:
     demos = [basic_demo, rag_demo, leak_demo, vulnerable_bot_demo]
     demo_names = ['Direct', 'RAG', 'Prompt Leak', 'Command Injection']
 
-demo = gr.TabbedInterface(demos, demo_names)
+css = """
+:root {
+    --text-md: 30px;
+    --text-sm: 30px;
+    --text-lg: 30px;
+    --text-xl: 30px;
+    --text-xs: 30px;
+    --input-text-size: 30px;
+    --button-text-size: 30px;
+    --label-text-size: 30px;
+}
+/* Additional fallbacks for textboxes */
+input, textarea, .gr-textbox input, .gr-textbox textarea {
+    font-size: 30px !important;
+}
+"""
+
+demo = gr.TabbedInterface(demos, demo_names, css=css)
 demo.launch(server_port=7860, share=False)

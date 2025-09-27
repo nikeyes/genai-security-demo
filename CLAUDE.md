@@ -96,8 +96,9 @@ export AWS_DEFAULT_PROFILE=PROFILE_NAME
 ## Testing Strategy
 
 - **Unit tests** in `tests/unit_tests/`
-- **Integration tests** in `tests/integration_tests/` (marked as `real_provider`)  
+- **Integration tests** in `tests/integration_tests/` (marked as `real_provider`)
 - **Approval tests** in `tests/approval_tests/`
+- **UI Testing** - Playwright MCP can be used to test UI changes interactively
 - Use `-m "not real_provider and not e2e"` to skip tests requiring real API calls
 
 ## Security Considerations
