@@ -4,9 +4,9 @@ import gradio as gr
 
 from config.llm_config import LLMConfig
 from ui.direct_injection_ui import basic_demo
-from ui.prompt_injection_demo_ui import leak_demo
 from ui.input_guardrail_ui import input_guardrail_demo
 from ui.output_guardrail_ui import output_guardrail_demo
+from ui.prompt_injection_demo_ui import leak_demo
 from ui.rag_ui import rag_demo
 from ui.tools_injection_bot_ui import vulnerable_bot_demo
 
@@ -21,18 +21,8 @@ else:
 
 css = """
 :root {
-    --text-md: 30px;
-    --text-sm: 30px;
-    --text-lg: 30px;
-    --text-xl: 30px;
-    --text-xs: 30px;
-    --input-text-size: 30px;
-    --button-text-size: 30px;
-    --label-text-size: 30px;
-}
-/* Additional fallbacks for textboxes */
-input, textarea, .gr-textbox input, .gr-textbox textarea {
-    font-size: 30px !important;
+    --text-md: 20px;
+    --text-lg: 18px;
 }
 """
 
